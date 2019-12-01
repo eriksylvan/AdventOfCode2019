@@ -10,7 +10,7 @@ class TestDay01(unittest.TestCase):
         self.assertEqual(day_01.fuel_calculator(100756), 33583)
 
     def test_fuel_calculator_inc_fuel(self):
-        self.assertEqual(day_01.fuel_calculator_inc_fuel(14), 21)
+        self.assertEqual(day_01.fuel_calculator_inc_fuel(14), 2)
         self.assertEqual(day_01.fuel_calculator_inc_fuel(1969), 966)
         self.assertEqual(day_01.fuel_calculator_inc_fuel(100756), 50346)
 

@@ -37,11 +37,9 @@ def fuel_calculator_inc_fuel(mass):
 
 def day01PartOne():
     fuel=0
-    rows=0
     with open(inputFile) as input:
         for line in input:
             fuel+=fuel_calculator(int(line))
-            rows+=1
 
     print(f'Solution Day 01, Part one:\nThe total fuel requirements for all of the modules: {fuel} \n\n')
 
@@ -50,11 +48,6 @@ def day01PartTwo():
     with open(inputFile) as input:
         for line in input:
             fuel_modul = fuel_calculator_inc_fuel(int(line))
-            # fuel_modul=fuel_calculator(int(line))
-            # extra_fuel=fuel_calculator(fuel_modul)
-            # while(extra_fuel>0):
-            #     fuel_modul+=extra_fuel
-            #     extra_fuel=fuel_calculator(extra_fuel)
             fuel+=fuel_modul
 
     print(f'Solution Day 01, Part one:\nThe total fuel requirements for all of the modules including the fuel itself: {fuel} \n\n')  
@@ -62,3 +55,7 @@ def day01PartTwo():
 if __name__ == "__main__":
     day01PartOne()
     day01PartTwo()
+
+
+# Run from terminal:
+# $ python day_01.py 
