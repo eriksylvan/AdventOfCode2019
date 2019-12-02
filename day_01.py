@@ -6,14 +6,14 @@ from math import floor
 inputFile = 'input/01_input'
 
 def fuel_calculator(mass):
-    '''Calculates the fuel required to launch a given module
+    """Calculates the fuel required to launch a given module
 
     Parameters:
     mass (int): the mass of a module 
         
     Returns:
-    int: the amunt of fuel needed to launch
-    ''' 
+    int: the amount of fuel needed to launch
+    """
     
     fuel=floor(mass/3)-2
     return fuel
