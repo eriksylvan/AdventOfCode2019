@@ -1,6 +1,9 @@
 # https://adventofcode.com/2019/day/3
 
 import copy
+from PIL import Image, ImageDraw   # python -m pip install pillow
+import os
+
 
 inputFile = 'input/03_input'
 
@@ -21,7 +24,56 @@ def manhattanDistance(wire1, wire2):
     '''
 
     size, cp = calculateGridSize(wire1, wire2) # cp: contral port location
-    print(size, cp)
+    
+    
+    img = Image.new('RGB', (int(size[0]/100),int(size[1]/100)))
+    draw = ImageDraw.Draw(img) 
+    
+
+    x,y = cp[0], cp[1]
+    newx, newy = x, y
+    
+
+    #################
+    for word in wire1:
+        direction = word[:1]
+        distance = int(word[1:])
+        
+        if direction == 'U':
+            new = x - distance             
+        elif direction == 'D':
+            newx = x + distance             
+        elif direction == 'L':
+            newy = y - distance             
+        elif direction == 'R':
+            newy = y + distance             
+        draw.line((int(x/100), int(y/100), int(newx/100), int(newy/100)), fill=(225,128,0) ,width=4)    
+        x=copy.deepcopy(newx)
+        y=copy.deepcopy(newy)
+    ###################
+    x,y = cp[0], cp[1]
+    newx, newy = x, y
+    
+    for word in wire2:
+        direction = word[:1]
+        distance = int(word[1:])
+        
+        if direction == 'U':
+            new = x - distance             
+        elif direction == 'D':
+            newx = x + distance             
+        elif direction == 'L':
+            newy = y - distance             
+        elif direction == 'R':
+            newy = y + distance             
+        draw.line((int(x/100), int(y/100), int(newx/100), int(newy/100)),fill=(225,225,0) ,width=4  ) 
+        x=copy.deepcopy(newx)
+        y=copy.deepcopy(newy)
+    ####################
+    img.show()
+    
+
+
     '''To be implemented'''
     return len(wire1)+len(wire2)
 
@@ -56,9 +108,9 @@ def calculateGridSize(wire1, wire2):
 def day03PartOne():
 
     wirePaths = getInputData()
-    # answer = manhattanDistance(wirePaths[0],wirePaths[1])
+    manhattanDistance(wirePaths[0],wirePaths[1])
     print(calculateGridSize(wirePaths[0],wirePaths[1]))
-    
+
     answer = 0
     print(f'Solution Day 03, Part one:\nAnswer: {answer} \n\n')
 
