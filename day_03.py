@@ -16,17 +16,16 @@ def getInputData():
 
 def manhattanDistance(wire1, wire2):
     ''' 
-    Takes two wire grid paths as input and return the Manhattan Distance from the central port to teh closest intersection of the wires.
+    Takes two wire grid paths as input and return the Manhattan Distance from the central port to the closest intersection of the wires.
     Wire grid path is represented by a list of directions and steps e.g. ['R8','U5','L5','D3']  
     '''
 
-    size = calculateMaxGridSize(wire1, wire2)
-
+    size, cp = calculateGridSize(wire1, wire2) # cp: contral port location
+    print(size, cp)
     '''To be implemented'''
     return len(wire1)+len(wire2)
 
-def calculateMaxGridSize(wire1, wire2):
-    
+def calculateGridSize(wire1, wire2):
     
     def gridSize(wire):
         U=0; D=0; L=0; R=0
@@ -45,19 +44,21 @@ def calculateMaxGridSize(wire1, wire2):
             else:
                 assert False, f'Invalid direction: {direction}'
         return [U,D,L,R] 
-
-    print(gridSize(wire1))
-    print(gridSize(wire2))
-    # [('U'),('D'),('L'),('R')]
-
-    return 0
+    
+    s1 = gridSize(wire1)
+    s2 = gridSize(wire2)
+    
+    for i in range(3): s1[i]=max(s1[i], s2[i])
+       
+    return (s1[0]+s1[1]+1, s1[2]+s1[3]+1),(s1[1]+1, s1[2]+1)
 
 
 def day03PartOne():
 
     wirePaths = getInputData()
     # answer = manhattanDistance(wirePaths[0],wirePaths[1])
-    print(calculateMaxGridSize(wirePaths[0],wirePaths[1]))
+    print(calculateGridSize(wirePaths[0],wirePaths[1]))
+    
     answer = 0
     print(f'Solution Day 03, Part one:\nAnswer: {answer} \n\n')
 
