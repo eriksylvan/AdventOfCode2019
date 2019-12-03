@@ -18,98 +18,60 @@ def getInputData():
 
 
 def calcManhattanDistance(pos1, pos2):
-    xDistance = pos1[0]-pos2[0]
-    yDistance = pos1[1]-pos2[1]
-    return abs(xDistance)+abs(yDistance)
+    '''
+    Calculates the Manhattan distance between two positions in a grid. (x1,y2) and (x2,y2)
+    '''
+    xDistance = pos1[0] - pos2[0]
+    yDistance = pos1[1] - pos2[1]
+    return abs(xDistance) + abs(yDistance)
 
 
-def getGridPathDicts(wire1):
+def getGridPathDict(wire):
     ''' 
-    Takes two wire grid paths as input and return gridPathDict with every cell in the grid 
+    Takes one wire grid paths as input and return gridPathDict that represent evey cell that whw wire pass in the grid path.     
     Wire grid path is represented by a list of directions and steps e.g. ['R8','U5','L5','D3']  
+    The dictionary key is a position (x,y) the value is minimum number of steps to reach that potition.
     '''
 
-    # size, cp = calculateGridSize(wire1, wire2) # cp: control port location
     x = 0
     y = 0
     stp = 0
-    pos1 = {}
-      
-    for word in wire1:
+    gridDict = {}
+
+    for word in wire:
         direction = word[:1]
         distance = int(word[1:])
 
         if direction == 'U':
             for move in range(distance):
                 stp += 1
-                if (x, y+move+1) not in pos1:
-                    pos1[(x, y+move+1)] = stp
+                if (x, y+move+1) not in gridDict:  # Do not override if position already exists
+                    gridDict[(x, y+move+1)] = stp
             y = y+distance
 
         elif direction == 'D':
             for move in range(distance):
                 stp += 1
-                if (x, y-move-1) not in pos1:
-                    pos1[(x, y-move-1)] = stp
+                if (x, y-move-1) not in gridDict:
+                    gridDict[(x, y-move-1)] = stp
             y = y-distance
 
         elif direction == 'L':
             for move in range(distance):
                 stp += 1
-                if (x-move-1, y) not in pos1:
-                    pos1[(x-move-1, y)] = stp
+                if (x-move-1, y) not in gridDict:
+                    gridDict[(x-move-1, y)] = stp
             x = x-distance
 
         elif direction == 'R':
             for move in range(distance):
                 stp += 1
-                if (x+move+1, y) not in pos1:
-                    pos1[(x+move+1, y)] = stp
+                if (x+move+1, y) not in gridDict:
+                    gridDict[(x+move+1, y)] = stp
             x = x+distance
-    ###################
 
-    # x = 0
-    # y = 0
-    # stp = 0    
-    # pos2 = {}
-    # for word in wire2:
-    #     direction = word[:1]
-    #     distance = int(word[1:])
+    return gridDict
 
-    #     if direction == 'U':
-    #         for move in range(distance):
-    #             stp += 1
-    #             if (x, y+move+1) not in pos2: 
-    #                 pos2[(x, y+move+1)] = stp
-    #         y = y+distance
-
-    #     elif direction == 'D':
-    #         for move in range(distance):
-    #             stp += 1
-    #             if (x, y-move-1) not in pos2:
-    #                 pos2[(x, y-move-1)] = stp      
-    #         y = y-distance
-
-    #     elif direction == 'L':
-    #         for move in range(distance):
-    #             stp += 1
-    #             if (x-move-1, y) not in pos2 :
-    #                 pos2[(x-move-1, y)] = stp
-    #         x = x-distance
-
-    #     elif direction == 'R':
-    #         for move in range(distance):
-    #             stp += 1
-    #             if (x+move+1, y) not in pos2:
-    #                 pos2[(x+move+1, y)] = stp
-    #         x = x+distance
-
-    ###################
-    
-
-
-
-    return pos1
 
 def manhattanDistance(wire1, wire2):
     ''' 
@@ -117,40 +79,37 @@ def manhattanDistance(wire1, wire2):
     Wire grid path is represented by a list of directions and steps e.g. ['R8','U5','L5','D3']  
     '''
 
+    gridDict1 = getGridPathDict(wire1)
+    gridDict2 = getGridPathDict(wire2)
+    set1 = set(gridDict1)
+    set2 = set(gridDict2)
 
-    pos1 = getGridPathDicts(wire1)
-    pos2 = getGridPathDicts(wire2)
-    set1 = set(pos1)
-    set2 = set(pos2)
-    
     intersection = set2 & set1
-    print(intersection)
     distance = []
     for i in intersection:
         distance.append(calcManhattanDistance((0, 0), i))
-    
+
     return min(distance)
-    
 
-def drawGrid(wire1, wire2):
-    ''' 
-    Dray a picture of two grid paths  
+
+def gridMinStep(wire1, wire2):
     '''
+    Takes two wire grid paths as input and return the Min grid distance to the fist intersection of the wires.
+    Wire grid path is represented by a list of directions and steps e.g. ['R8','U5','L5','D3']  
+    '''
+    gridDict1 = getGridPathDict(wire1)
+    gridDict2 = getGridPathDict(wire2)
+    set1 = set(gridDict1)
+    set2 = set(gridDict2)
 
-    size, cp = calculateGridSize(wire1, wire2)  # cp: control port location
-    scale = 100
-
-    img = Image.new('RGB', (int(size[0]/scale), int(size[1]/scale)))
-    draw = ImageDraw.Draw(img)
-
-    drawOneWire(cp, wire1, draw, scale, (255, 255, 0))
-    drawOneWire(cp, wire2, draw, scale, (255, 128, 0))
-    img.show()
-
-    return None
+    intersection = set2 & set1
+    steps = []
+    for i in intersection:
+        steps.append(gridDict1.get(i) + gridDict2.get(i))
+    return min(steps)
 
 
-def drawOneWire(cp, wire2, draw, scale, color):
+def drawWire(cp, wire2, draw, scale, color):
     x, y = cp[0], cp[1]
     newx, newy = x, y
 
@@ -173,6 +132,9 @@ def drawOneWire(cp, wire2, draw, scale, color):
 
 
 def calculateGridSize(wire1, wire2):
+    '''
+    Calculates the maximal gridsize that is needed
+    '''
 
     def gridSize(wire):
         U = 0
@@ -209,18 +171,36 @@ def day03PartOne():
     wirePaths = getInputData()
     answer = manhattanDistance(wirePaths[0], wirePaths[1])
     #  drawGrid(wirePaths[0], wirePaths[1])
-    print(f'Solution Day 03, Part one:\nAnswer: {answer} \n\n')
+    print(f'Solution Day 03, Part one:\nThe Manhattan distance from the central port to the closest intersection: {answer} \n\n')
 
 
 def day03PartTwo():
-    answer = "unknown"
-    print(f'Solution Day 03, Part two:\nAnswer: {answer} \n\n')
+    wirePaths = getInputData()
+    answer = gridMinStep(wirePaths[0], wirePaths[1])
+    print(f'Solution Day 03, Part two:\nThe fewest combined steps the wires must take to reach an intersection: {answer} \n\n')
+
+
+def drawWirePath():
+    ''' 
+    Dray a picture of two grid paths  
+    '''
+    wirePaths = getInputData()
+    # cp: control port location
+    size, cp = calculateGridSize(wirePaths[0], wirePaths[1])
+    scale = 100
+
+    img = Image.new('RGB', (int(size[0]/scale), int(size[1]/scale)))
+    draw = ImageDraw.Draw(img)
+
+    drawWire(cp, wirePaths[0], draw, scale, (255, 255, 0))
+    drawWire(cp, wirePaths[1], draw, scale, (255, 128, 0))
+    img.show()
 
 
 if __name__ == "__main__":
     day03PartOne()
     day03PartTwo()
-
+    drawWirePath()
 
 # Run from terminal:
 # $ python day_03.py
