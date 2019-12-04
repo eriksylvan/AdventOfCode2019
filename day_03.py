@@ -142,7 +142,7 @@ def calculateGridSize(wire1, wire2):
         L = 0
         R = 0
         for word in wire:
-            direction = word[:1]
+            direction = word[0]
             distance = int(word[1:])
 
             if direction == 'U':
