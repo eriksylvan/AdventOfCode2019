@@ -11,6 +11,14 @@ class TestDay04(unittest.TestCase):
         self.assertFalse(day_04.isValidPassword('123789'))
         self.assertTrue(day_04.isValidPassword('235589'))
 
+    def test_password_2(self):
+        self.assertTrue(day_04.isValidPassword2('112233'))
+        self.assertFalse(day_04.isValidPassword2('123444'))
+        self.assertTrue(day_04.isValidPassword2('111122'))
+        
+        
+            
+
         
 if __name__ == '__main__':
     unittest.main()

@@ -36,6 +36,20 @@ def isValidPassword(password):
             break
     return v1 and v2 and v3
 
+def isValidPassword2(password):
+    
+    v = isValidPassword(password)    
+    pwd = '#' + str(password) + '#'
+    v2 = False
+
+    for i in range(len(pwd)-2):
+        if pwd[i] != pwd[i+1] and pwd[i+1] == pwd[i+2] and pwd[i+2] != pwd[i+3]:
+            v2 = True
+            break
+    
+    return v and v2
+
+
 def day04PartOne():
     limits = getInputData()
     validPwdList = []
@@ -47,7 +61,12 @@ def day04PartOne():
 
 
 def day04PartTwo():
-    answer = "unknown"
+    limits = getInputData()
+    validPwdList = []
+    for p in range(limits[0],limits[1]+1):
+        if isValidPassword2(p):
+            validPwdList.append(p)
+    answer = len(validPwdList)
     print(f'Solution Day 04, Part two:\nAnswer: {answer} \n\n')
 
 
