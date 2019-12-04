@@ -38,4 +38,4 @@ if __name__ == "__main__":
     day04PartTwo()
 
 # Run from terminal:
-# $ python day_03.py
+# $ python day_04.py
