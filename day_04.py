@@ -16,15 +16,33 @@ def getInputData():
 def isValidPassword(password):
     '''     To be implemented     '''
     
+    pwd = str(password)
+    
     # It is a six-digit number.
-    # The value is within the range given in your puzzle input.
-    # Two adjacent digits are the same (like 22 in 122345).
-    # Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
+    v1 = len(pwd)==6
 
-    return False
+    # Two adjacent digits are the same (like 22 in 122345).
+    v2 = False
+    for i in range(len(pwd)-1):
+        if pwd[i] == pwd[i+1]:
+            v2 = True
+            break
+    
+    # Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
+    v3 = True
+    for i in range(len(pwd)-1):
+        if int(pwd[i]) > int(pwd[i+1]):
+            v3 = False
+            break
+    return v1 and v2 and v3
 
 def day04PartOne():
-    answer = "unknown"
+    limits = getInputData()
+    validPwdList = []
+    for p in range(limits[0],limits[1]+1):
+        if isValidPassword(p):
+            validPwdList.append(p)
+    answer = len(validPwdList)
     print(f'Solution Day 04, Part one:\nAnswer: {answer} \n\n')
 
 
