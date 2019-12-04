@@ -1,8 +1,8 @@
-# https://adventofcode.com/2019/day/Y
+# https://adventofcode.com/2019/day/4
 
 import copy
 
-inputFile = 'input/XX_input'
+inputFile = 'input/04_input'
 
 
 def getInputData():
@@ -14,19 +14,19 @@ def getInputData():
     return intCodeProgram
 
 
-def dayXXPartOne():
+def day04PartOne():
     answer = "unknown"
-    print(f'Solution Day XX, Part one:\nAnswer: {answer} \n\n')
+    print(f'Solution Day 04, Part one:\nAnswer: {answer} \n\n')
 
 
-def dayXXPartTwo():
+def day04PartTwo():
     answer = "unknown"
-    print(f'Solution Day XX, Part two:\nAnswer: {answer} \n\n')
+    print(f'Solution Day 04, Part two:\nAnswer: {answer} \n\n')
 
 
 if __name__ == "__main__":
-    dayXXPartOne()
-    dayXXPartTwo()
+    day04PartOne()
+    day04PartTwo()
 
 # Run from terminal:
-# $ python day_XX.py
+# $ python day_03.py
