@@ -2,7 +2,7 @@
 
 import copy
 
-# inputFile = ''
+# inputFile =  ''
 
 
 def getInputData():
