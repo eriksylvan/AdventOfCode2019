@@ -20,25 +20,25 @@ def isValidPassword(password):
     
     try:
         # It is a six-digit number.
-        v1 = len(pwd)==6
-        if not v1: raise Exception()
+        v = len(pwd)==6
+        if not v: raise Exception()
 
         # Two adjacent digits are the same (like 22 in 122345).
-        v2 = False
+        v = False
         for i in range(len(pwd)-1):
             if pwd[i] == pwd[i+1]:
-                v2 = True
+                v = True
                 break
-        if not v2: raise Exception()
+        if not v: raise Exception()
 
         # Going from left to right, the digits never decrease; they only ever increase or stay the same (like 111123 or 135679).
-        v3 = True
+        v = True
         for i in range(len(pwd)-1):
             if int(pwd[i]) > int(pwd[i+1]):
-                v3 = False
+                v = False
                 raise Exception()
     finally:
-            return v1 and v2 and v3
+            return v
 
 def isValidPassword2(password):
     
