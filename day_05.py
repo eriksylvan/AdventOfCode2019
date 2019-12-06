@@ -36,3 +36,15 @@ if __name__ == "__main__":
 
 # Run from terminal:
 # $ python day_05.py
+
+# Result
+# Output:3
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:9006673

@@ -18,15 +18,11 @@ class TestDay05(unittest.TestCase):
         IC.perform_one_operation(0)
         self.assertEqual(IC._intCodeProgram,[1001,2,2,4,4])
 
-    # def test_input(self):
-    #     IC = IntcodeComputer([1003,4,2,4,33])
-    #     IC.perform_one_operation(0)
-    #     self.assertEqual(IC._intCodeProgram,[1002,2,2,4,4])
-
-# @unittest.SkipTest('Not implemeted yet')
-#     def test_diagnostic_program(self):
-#         self.assertEqual(day_05.runDiagnosticProgram([1002,4,3,4,33]), 0)
-
+    def test_jumpTrue(self):
+        IC = IntcodeComputer([1105, 1, 4, 4, 99])
+        IC.perform_one_operation(0)
+        self.assertEqual(IC._intCodeProgram,[1105, 1, 4, 4, 99])
+        self.assertEqual(IC._memoryPosition,4)
 
         
             
