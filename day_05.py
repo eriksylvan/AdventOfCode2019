@@ -1,6 +1,7 @@
 # https://adventofcode.com/2019/day/5
 
 import copy
+from intcode_computer import IntcodeComputer 
 
 inputFile = 'input/05_input'
 
@@ -18,13 +19,15 @@ def runDiagnosticProgram(intCode):
 
 
 def day05PartOne():
-    answer = "unknown"
-    print(f'Solution Day 05, Part one:\nAnswer: {answer} \n\n')
-
+    prg = getInputData()
+    IntCode = IntcodeComputer(prg)
+    print(f'Solution Day 05, Part one:\nRunning TEST diagnostic program...\nGive manual input=>1\n')
+    IntCode.run_program()
+    
 
 def day05PartTwo():
     answer = "unknown"
-    print(f'Solution Day 05, Part two:\nAnswer: {answer} \n\n')
+    print(f'\n\n Solution Day 05, Part two:\nAnswer: {answer} \n\n')
 
 
 if __name__ == "__main__":

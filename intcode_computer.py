@@ -11,11 +11,12 @@ class IntcodeComputer:
         self._memoryPosition = 0
 
     def addOP(self, paramode):
-        print("ADD")
-        print(paramode)
+        # #print("ADD")
+        #print(paramode)
         p1 = self._intCodeProgram[self._memoryPosition + 1]
         p2 = self._intCodeProgram[self._memoryPosition + 2]
         p3 = self._intCodeProgram[self._memoryPosition + 3]
+        #print(p1,p2,p3)
         if paramode[-1] == 0:
             t1 = self._intCodeProgram[p1]
         else: 
@@ -25,13 +26,14 @@ class IntcodeComputer:
             t2 = self._intCodeProgram[p2]
         else: 
             t2 = p2
+        #print(t1, t2)
         self._intCodeProgram[p3] = int(t1 + t2)
         return 3 # OP size
         
 
     def multiplyOP(self, paramode):
-        print("MULTIPLY")
-        print(paramode)
+        # #print("MULTIPLY")
+        # #print(paramode)
         p1 = self._intCodeProgram[self._memoryPosition + 1]
         p2 = self._intCodeProgram[self._memoryPosition + 2]
         p3 = self._intCodeProgram[self._memoryPosition + 3]
@@ -82,9 +84,9 @@ class IntcodeComputer:
     def getParameterMode(self, word, size):
         l1 =  [0 for x in range(size)]
         l2 =  [int(i) for i in word[:-2]]
-        if len(l2) > 0:
-            for x in range(-1,-size,-1):
-                l1[x] = l2[x]
+        #print(l1, l2, len(l2), -len(l2))
+        for x in range(-1,-len(l2)-1,-1):
+            l1[x] = l2[x]
         return(l1)
         
 
@@ -94,18 +96,34 @@ class IntcodeComputer:
         opword = str(self._intCodeProgram[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
-        print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\n')
-        op(paramode) # Perform opeartion
+        # #print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\n')
+        try:
+            op(paramode) # Perform opeartion
+        except:
+            print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgram[memPos:memPos+5]} ')
         self._memoryPosition += opsize + 1
+        if self._intCodeProgram[self._memoryPosition] == 99:
+            halt = True
+        
+        return halt
+
+    def run_program(self):
+        halt = False
+        self._memoryPosition = 0
+        while not halt:
+            halt = self.perform_one_operation(self._memoryPosition)
+        return True
+        
 
 
 
 
 
 if __name__ == "__main__":
-    IntCode = IntcodeComputer([1001,4,3,4,33])
+    IntCode = IntcodeComputer([1001, 4, -1040, 4, 4])
     IntCode.perform_one_operation(0)
-    print(IntCode._intCodeProgram)
+    #IntCode.run_program()
+    # #print(IntCode._intCodeProgram)
 
 
 
