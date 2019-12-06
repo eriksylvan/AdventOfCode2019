@@ -14,23 +14,20 @@ def getInputData():
             data.append(str(line).replace('\n','').replace('\r',''))
     return data
 
-def countOutersteps(orbitDictonary,satellite,step):
+def countOutersteps(orbitDictonary,satellite,step,deeplist):
     deep=step
     for s in satellite:
         step=deep
-        print(f'Visiting: {s} step:{step}')
-        result=step
-        print(f'Child: {orbitDictonary.get(s,"Not centre")}')
+       # print(f'Visiting: {s} step:{step}')
+       # print(f'Child: {orbitDictonary.get(s,"Not centre")}')
+        deeplist.append(step)
         if orbitDictonary.get(s,"Not centre")=="Not centre":
-            print(step)
+            step+=1
         else:
             step+=1
-            print(step)
             nextSatellite=orbitDictonary.get(s)
-            result+=countOutersteps(orbitDictonary,nextSatellite,step)
-            print(step)
-            
-    return result
+            step+=countOutersteps(orbitDictonary,nextSatellite,step, deeplist)          
+    return step
 
 def noOfOrbits(orbitMap):
     orbitDictonary = defaultdict(list)
@@ -38,10 +35,10 @@ def noOfOrbits(orbitMap):
         centre=orbit.split(')')[0]
         satellite=orbit.split(')')[1]
         orbitDictonary[centre].append(satellite)
-    print(f'orbitDictonary:{orbitDictonary}')
     satellite=orbitDictonary.get("COM")
-    nbrOrbits=countOutersteps(orbitDictonary,satellite,1) 
-    return nbrOrbits  
+    deeplist=[]
+    countOutersteps(orbitDictonary,satellite,1, deeplist) 
+    return sum(deeplist)  
 
 
 
@@ -55,3 +52,10 @@ def day06PartOne():
 def day06PartTwo():
     answer = "unknown"
     print(f'Solution Day 06, Part two:\nAnswer: {answer} \n\n')
+
+if __name__ == "__main__":
+    day06PartOne()
+    day06PartTwo()
+
+# Run from terminal:
+# $ python day_05.py
