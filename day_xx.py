@@ -7,11 +7,11 @@ inputFile = 'input/XX_input'
 
 def getInputData():
     '''Reads the input file end returns the data in a list of int'''
-    intCodeProgram = []
+    data = []
     with open(inputFile) as input:
         for line in input:
-            intCodeProgram = [int(x) for x in line.split(',')]
-    return intCodeProgram
+            data = [int(x) for x in line.split(',')]
+    return data
 
 
 def dayXXPartOne():

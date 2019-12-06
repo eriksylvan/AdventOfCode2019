@@ -2,7 +2,7 @@ import unittest
 import day_05
 from intcode_computer import IntcodeComputer 
 
-class TestDay05day_05(unittest.TestCase):
+class TestDay05(unittest.TestCase):
     
 
 
