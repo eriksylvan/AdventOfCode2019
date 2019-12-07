@@ -1,8 +1,11 @@
+
+
 class IntcodeComputer:
     '''
     Represents an Intcode Computer
     '''
-
+    import copy
+    
     def __init__(self, program):
         '''
         Instance an Intcode Computer and load a program
@@ -23,13 +26,11 @@ class IntcodeComputer:
             f2 = self._intCodeProgram[p2]
         else: 
             f2 = p2
-
-        if paramode[-1] == 0:
+        if paramode[-3] == 0:
             self._intCodeProgram[p3] = int(f1 + f2)
         else: 
             self._intCodeProgram[self._memoryPosition + 3] = int(f1 + f2)
             
-        self._intCodeProgram[p3] = int(f1 * f2)
         return self._memoryPosition + 4 
         
 
@@ -52,7 +53,6 @@ class IntcodeComputer:
         else: 
             self._intCodeProgram[self._memoryPosition + 3] = int(f1 * f2)
             
-        self._intCodeProgram[p3] = int(f1 * f2)
         return self._memoryPosition + 4 
 
     def inputOP(self, paramode):
@@ -62,13 +62,16 @@ class IntcodeComputer:
         if paramode[-1] == 0:
             self._intCodeProgram[p1] = i1
         else: 
-            self._intCodeProgram[self._memoryPosition + 1] = i1
-        
+            self._intCodeProgram[self._memoryPosition + 1] = i1        
         return self._memoryPosition + 2
     
     def outputOP(self, paramode):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
-        print(f'Output:{self._intCodeProgram[p1]}')
+        if paramode[-1] == 0:
+            o1 = self._intCodeProgram[p1]
+        else:
+            o1 = p1
+        print(f'Output:{o1}')
         return self._memoryPosition + 2
 
 #   Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothi  ng.
@@ -76,13 +79,15 @@ class IntcodeComputer:
         p1 = self._intCodeProgram[self._memoryPosition + 1]
         p2 = self._intCodeProgram[self._memoryPosition + 2]
         if paramode[-1] == 0:
-            b1 = self._intCodeProgram[p1]
+            b1 = int(self._intCodeProgram[p1])
         else: 
-            b1 = p1
+            b1 = int(p1)
         if paramode[-2] == 0:
-            pt1 = self._intCodeProgram[p2]
+            pt1 = int(self._intCodeProgram[p2])
         else: 
-            pt1 = p2
+            pt1 = int(p2)
+
+
         if b1:
             nextMemPosition = pt1
         else:
@@ -96,13 +101,15 @@ class IntcodeComputer:
         p1 = self._intCodeProgram[self._memoryPosition + 1]
         p2 = self._intCodeProgram[self._memoryPosition + 2]
         if paramode[-1] == 0:
-            b1 = self._intCodeProgram[p1]
+            b1 = int(self._intCodeProgram[p1])
         else: 
-            b1 = p1
+            b1 = int(p1)
         if paramode[-2] == 0:
-            pt1 = self._intCodeProgram[p2]
+            pt1 = int(self._intCodeProgram[p2])
         else: 
-            pt1 = p2
+            pt1 = int(p2)
+
+
         if not b1:
             nextMemPosition = pt1
         else:
@@ -186,7 +193,6 @@ class IntcodeComputer:
         l2 =  [int(i) for i in word[:-2]]
         for x in range(-1,-len(l2)-1,-1):
             l1[x] = l2[x]
-        print(l1)
         return(l1)
         
 
@@ -201,9 +207,11 @@ class IntcodeComputer:
         try:
             nextMemoryPosition = op(paramode) # Perform opeartion
             self._memoryPosition = nextMemoryPosition
-        except:
+        except Exception:
             print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgram[memPos:memPos+5]} ')
             halt = True
+            raise
+            
         
 
         if self._intCodeProgram[self._memoryPosition] == 99:
@@ -229,14 +237,53 @@ if __name__ == "__main__":
     # IntCode.run_program()
     # print(IntCode._intCodeProgram)
 
-    # Example 1, Imput == 8 -> 1
-    IC = IntcodeComputer([3,9,8,9,10,9,4,9,99,-1,8])
-    #IC.perform_one_operation(0)
-    IC.run_program()
-    print(IC._intCodeProgram)
+    # # Example 1, input equal 8, Input == 8 -> 1
+    # print("Example 1, input equal 8, Input == 8 -> 1")
+    # IC = IntcodeComputer([3,9,8,9,10,9,4,9,99,-1,8])
+    # IC.run_program()
+    # print(IC._intCodeProgram)
+
+    # # Example 2, input less than 8, Input == 8 --> 0 
+    # print("Example 2, input less than 8, Input == 8 --> 0")
+    # IC = IntcodeComputer([3,9,7,9,10,9,4,9,99,-1,8])
+    # IC.run_program()
+    # print(IC._intCodeProgram)
+
+    # # Example 3, input equal 8, Input == 8 --> 0 
+    # print("Example 3, input equal 8, Input == 8 --> 0")
+    # IC = IntcodeComputer([3,3,1108,-1,8,3,4,3,99])
+    # IC.run_program()
+    # print(IC._intCodeProgram)
+
+    # # Example 4, input less than 8, Input == 8 --> 0 
+    # print("Example 4, input less than 8, Input == 8 --> 0")
+    # IC = IntcodeComputer([3,3,1107,-1,8,3,4,3,99])
+    # IC.run_program()
+    # print(IC._intCodeProgram)
 
 
-            # 1   addOP
+    # # Example 5, (using position mode), Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
+    # print('Example 5, (using position mode), Jump test Input == 0 --> 0, Input != 0 --> 1 )')
+    # IC = IntcodeComputer([3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9])
+    # IC.run_program()
+    # print(IC._intCodeProgram)
+
+
+    # # Example 6, (using immediate  mode), Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
+    # print('Example 6, (using position mode), Jump test Input == 0 --> 0, Input != 0 --> 1 )')
+     
+    # IC = IntcodeComputer([3,3,1105,-1,9,1101,0,0,12,4,12,99,1]) 
+    # IC.run_program()
+    # print(IC._intCodeProgram)
+
+    # # # Example 7, Lager program, input > 8 --> output 999, input == 8 --> output 1000, input > 8 --> output 1001
+    # print('Example 7, Lager program, input > 8 --> output 999, input == 8 --> output 1000, input > 8 --> output 1001')
+    # IC = IntcodeComputer([3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99])
+    # IC.run_program()
+    # print(IC._intCodeProgram)
+
+
+            # 1   addOP8
             # 2   multiplyOP
             # 3   inputOP
             # 4   outputOP

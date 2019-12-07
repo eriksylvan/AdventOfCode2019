@@ -79,6 +79,9 @@ class TestDay05(unittest.TestCase):
         self.assertEqual(IC._intCodeProgram,[1109, 2, 1, 0, 99])
         self.assertEqual(IC._memoryPosition,4)
 
+
+#########################################################################################
+
     def test_example1(self):
         IC = IntcodeComputer([3,9,8,9,10,9,4,9,99,-1,8])
         IC.run_program()
