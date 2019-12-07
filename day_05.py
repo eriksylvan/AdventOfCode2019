@@ -14,8 +14,8 @@ def getInputData():
             intCodeProgram = [int(x) for x in line.split(',')]
     return intCodeProgram
 
-def runDiagnosticProgram(intCode):
-    return len(intCode)
+# def runDiagnosticProgram(intCode):
+#     return len(intCode)
 
 
 def day05PartOne():
@@ -26,13 +26,31 @@ def day05PartOne():
     
 
 def day05PartTwo():
-    answer = "unknown"
-    print(f'\n\n Solution Day 05, Part two:\nAnswer: {answer} \n\n')
+    prg2 = getInputData()
+    IntCode2 = IntcodeComputer(prg2)
+    print(f'Solution Day 05, Part two:\nRunning TEST diagnostic program...\nGive manual input=>5\n')
+    IntCode2.run_program()
 
 
 if __name__ == "__main__":
     day05PartOne()
     day05PartTwo()
 
+
+    
+
+
 # Run from terminal:
 # $ python day_05.py
+
+# Result
+# Output:3
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:0
+# Output:9006673
