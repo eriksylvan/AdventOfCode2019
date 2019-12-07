@@ -46,40 +46,52 @@ def noOfOrbits(orbitMap):
 ########################################
 
 
-def returnOrbitRoute(orbitDictonary, satellite, orbitRoute, EndPoint):
+def getOrbitRoute(orbitDictonary, satellite, orbitRoute, EndPoint):
     '''
     Returns the path fom Center of Mass (COM) to 'EndPoint', represented as a list of satellites to pass.
     '''
-    print (orbitDictonary)
+    found = False
+    routeSoFar = copy.deepcopy(orbitRoute)
     for s in satellite:
+        orbitRoute = copy.deepcopy(routeSoFar)
         orbitRoute.append(s)
-        print(f'Visiting: {s} orbitRoute:{orbitRoute}')
-        print(f'Child: {orbitDictonary.get(s,"Not centre")}')
-        if orbitDictonary.get(s,"Not centre")=="Not centre":
-            if s==EndPoint:
-                break
-        else:
+        #print(f'Visiting: {s} orbitRoute:{orbitRoute}')
+        #print(f'Child: {orbitDictonary.get(s,"Not centre")}')
+        if s==EndPoint:
+                # print('Endpoint found!')
+                found = True
+        if orbitDictonary.get(s,"Not centre")!="Not centre" and not found:
             nextSatellite=orbitDictonary.get(s)
-            orbitRoute.append(countOutersteps(orbitDictonary,nextSatellite,orbitRoute, EndPoint))
-    return orbitRoute
+            orbitRoute, found = getOrbitRoute(orbitDictonary, nextSatellite, orbitRoute, EndPoint)
+        if found: break
+    return orbitRoute, found
 
 def distanceSanta(orbitMap):
+    found = False
     orbitDictonary = defaultdict(list)
     for orbit in orbitMap:
         centre=orbit.split(')')[0]
         satellite=orbit.split(')')[1]
         orbitDictonary[centre].append(satellite)
-    print(orbitDictonary)
+    #print(orbitDictonary)
 
     satellite=orbitDictonary.get("COM")
+    #print(satellite)
     youRoute = []
-#    youRoute=returnOrbitList(orbitMap,satellite,["COM"],'YOU')
-    
+    youRoute, found = getOrbitRoute(orbitDictonary,satellite, youRoute,'YOU')
+    #print(youRoute)
+    #print('FindSanta!!!!!!!!!!!!')
     santaRoute = []    
-    satellite=orbitDictonary.get("COM")
-#    santaRoute=returnOrbitList(orbitMap,satellite,["COM"],'SAN')
+    #satellite=orbitDictonary.get("COM")
+    santaRoute, found = getOrbitRoute(orbitDictonary,satellite, santaRoute,'SAN')
+    #print(santaRoute)
 
-    return len(orbitMap)
+    youSet = set(youRoute)
+    santaSet = set(santaRoute)
+
+    #print(youSet ^ santaSet)
+
+    return len(youSet ^ santaSet)-2
 
 
 
