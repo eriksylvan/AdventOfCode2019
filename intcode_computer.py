@@ -15,15 +15,21 @@ class IntcodeComputer:
         p2 = self._intCodeProgram[self._memoryPosition + 2]
         p3 = self._intCodeProgram[self._memoryPosition + 3]
         if paramode[-1] == 0:
-            t1 = self._intCodeProgram[p1]
+            f1 = self._intCodeProgram[p1]
         else: 
-            t1 = p1
+            f1 = p1
         
         if paramode[-2] == 0:
-            t2 = self._intCodeProgram[p2]
+            f2 = self._intCodeProgram[p2]
         else: 
-            t2 = p2
-        self._intCodeProgram[p3] = int(t1 + t2)
+            f2 = p2
+
+        if paramode[-1] == 0:
+            self._intCodeProgram[p3] = int(f1 + f2)
+        else: 
+            self._intCodeProgram[self._memoryPosition + 3] = int(f1 + f2)
+            
+        self._intCodeProgram[p3] = int(f1 * f2)
         return self._memoryPosition + 4 
         
 
@@ -40,14 +46,24 @@ class IntcodeComputer:
             f2 = self._intCodeProgram[p2]
         else: 
             f2 = p2
+
+        if paramode[-1] == 0:
+            self._intCodeProgram[p3] = int(f1 * f2)
+        else: 
+            self._intCodeProgram[self._memoryPosition + 3] = int(f1 * f2)
+            
         self._intCodeProgram[p3] = int(f1 * f2)
         return self._memoryPosition + 4 
 
     def inputOP(self, paramode):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
-        i1 = input("?")
+        i1 = int(input("?"))
         # Todo: check, only number 0-9
-        self._intCodeProgram[p1] = int(i1)
+        if paramode[-1] == 0:
+            self._intCodeProgram[p1] = i1
+        else: 
+            self._intCodeProgram[self._memoryPosition + 1] = i1
+        
         return self._memoryPosition + 2
     
     def outputOP(self, paramode):
@@ -93,6 +109,7 @@ class IntcodeComputer:
             nextMemPosition = self._memoryPosition + 3
         return nextMemPosition
 
+#   Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
     def lessOP(self, paramode):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
         p2 = self._intCodeProgram[self._memoryPosition + 2]
@@ -110,25 +127,6 @@ class IntcodeComputer:
         else:
             self._intCodeProgram[p3] = 0
         return self._memoryPosition + 4 
-
-#   Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
-    def greatOP(self, paramode):
-        p1 = self._intCodeProgram[self._memoryPosition + 1]
-        p2 = self._intCodeProgram[self._memoryPosition + 2]
-        p3 = self._intCodeProgram[self._memoryPosition + 3]
-        if paramode[-1] == 0:
-            v1 = self._intCodeProgram[p1]
-        else: 
-            v1 = p1 
-        if paramode[-2] == 0:
-            v2 = self._intCodeProgram[p2]
-        else: 
-            v2 = p2
-        if v1>v2:
-            self._intCodeProgram[p3] = 1
-        else:
-            self._intCodeProgram[p3] = 0
-        return self._memoryPosition + 4         
 
 #   Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
     def equalOP(self, paramode):
@@ -175,11 +173,8 @@ class IntcodeComputer:
             size = 2    
         elif opNo == 7:
             op = self.lessOP
-            size = 4    
+            size = 4     
         elif opNo == 8:
-            op = self.greatOP
-            size = 4   
-        elif opNo == 9:
             op = self.equalOP
             size = 4   
         else:
@@ -228,10 +223,31 @@ class IntcodeComputer:
 
 if __name__ == "__main__":
     print('\nMain\n\n')
-    IntCode = IntcodeComputer([1105, 1, 4, 4, 99])
-    # IntCode.perform_one_operation(0)
-    IntCode.run_program()
-    print(IntCode._intCodeProgram)
+    # IntCode = IntcodeComputer([1105, 1, 4, 4, 99])
+    # # IntCode.perform_one_operation(0)
+    # IntCode.run_program()
+    # print(IntCode._intCodeProgram)
+
+    # Example 1, Imput == 8 -> 1
+    IC = IntcodeComputer([3,9,8,9,10,9,4,9,99,-1,8])
+    #IC.perform_one_operation(0)
+    IC.run_program()
+    print(IC._intCodeProgram)
+
+
+            # 1   addOP
+            # 2   multiplyOP
+            # 3   inputOP
+            # 4   outputOP
+            # 5   jumpTrueOP
+            # 6   jumpFalseOP
+            # 7   lessOP
+            # 8   equalOP
+        
+
+
+    # self.assertEqual(IC._intCodeProgram,[])
+        # self.assertEqual(IC._memoryPosition,4)
 
 
 
