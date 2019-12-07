@@ -26,8 +26,10 @@ def day05PartOne():
     
 
 def day05PartTwo():
-    answer = "unknown"
-    print(f'\n\n Solution Day 05, Part two:\nAnswer: {answer} \n\n')
+    prg = getInputData()
+    IntCode = IntcodeComputer(prg)
+    print(f'Solution Day 05, Part two:\nRunning TEST diagnostic program...\nGive manual input=>5\n')
+    IntCode.run_program()
 
 
 if __name__ == "__main__":

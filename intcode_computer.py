@@ -57,37 +57,100 @@ class IntcodeComputer:
 
 #   Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothi  ng.
     def jumpTrueOP(self, paramode):
-        print('True JUMP')
         p1 = self._intCodeProgram[self._memoryPosition + 1]
         p2 = self._intCodeProgram[self._memoryPosition + 2]
-
-        print(p1, p2)
-
-
         if paramode[-1] == 0:
             b1 = self._intCodeProgram[p1]
         else: 
             b1 = p1
-
-        print(f'b1{b1}')
         if paramode[-2] == 0:
             pt1 = self._intCodeProgram[p2]
         else: 
             pt1 = p2
-        print(f'pt1{pt1}')
         if b1:
             nextMemPosition = pt1
         else:
-            nextMemPosition = self._memoryPosition
+            nextMemPosition = self._memoryPosition + 3
 
         return nextMemPosition
 
 
 #   Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+    def jumpFalseOP(self, paramode):
+        p1 = self._intCodeProgram[self._memoryPosition + 1]
+        p2 = self._intCodeProgram[self._memoryPosition + 2]
+        if paramode[-1] == 0:
+            b1 = self._intCodeProgram[p1]
+        else: 
+            b1 = p1
+        if paramode[-2] == 0:
+            pt1 = self._intCodeProgram[p2]
+        else: 
+            pt1 = p2
+        if not b1:
+            nextMemPosition = pt1
+        else:
+            nextMemPosition = self._memoryPosition + 3
+        return nextMemPosition
+
+    def lessOP(self, paramode):
+        p1 = self._intCodeProgram[self._memoryPosition + 1]
+        p2 = self._intCodeProgram[self._memoryPosition + 2]
+        p3 = self._intCodeProgram[self._memoryPosition + 3]
+        if paramode[-1] == 0:
+            v1 = self._intCodeProgram[p1]
+        else: 
+            v1 = p1
+        if paramode[-2] == 0:
+            v2 = self._intCodeProgram[p2]
+        else: 
+            v2 = p2
+        if v1<v2:
+            self._intCodeProgram[p3] = 1
+        else:
+            self._intCodeProgram[p3] = 0
+        return self._memoryPosition + 4 
 
 #   Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+    def greatOP(self, paramode):
+        p1 = self._intCodeProgram[self._memoryPosition + 1]
+        p2 = self._intCodeProgram[self._memoryPosition + 2]
+        p3 = self._intCodeProgram[self._memoryPosition + 3]
+        if paramode[-1] == 0:
+            v1 = self._intCodeProgram[p1]
+        else: 
+            v1 = p1 
+        if paramode[-2] == 0:
+            v2 = self._intCodeProgram[p2]
+        else: 
+            v2 = p2
+        if v1>v2:
+            self._intCodeProgram[p3] = 1
+        else:
+            self._intCodeProgram[p3] = 0
+        return self._memoryPosition + 4         
 
 #   Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+    def equalOP(self, paramode):
+        p1 = self._intCodeProgram[self._memoryPosition + 1]
+        p2 = self._intCodeProgram[self._memoryPosition + 2]
+        p3 = self._intCodeProgram[self._memoryPosition + 3]
+        if paramode[-1] == 0:
+            v1 = self._intCodeProgram[p1]
+        else: 
+            v1 = p1     
+        if paramode[-2] == 0:
+            v2 = self._intCodeProgram[p2]
+        else: 
+            v2 = p2
+        if v1==v2:
+            self._intCodeProgram[p3] = 1
+        else:
+            self._intCodeProgram[p3] = 0
+        return self._memoryPosition + 4   
+
+
+
 
     def getoperation(self, word):
         opNo = int(word[-2:])
@@ -107,6 +170,18 @@ class IntcodeComputer:
         elif opNo == 5:
             op = self.jumpTrueOP
             size = 2    
+        elif opNo == 6:
+            op = self.jumpFalseOP
+            size = 2    
+        elif opNo == 7:
+            op = self.lessOP
+            size = 4    
+        elif opNo == 8:
+            op = self.greatOP
+            size = 4   
+        elif opNo == 9:
+            op = self.equalOP
+            size = 4   
         else:
             assert False, f'Invalid operation code ({opNo}).'
         return op, size
@@ -114,7 +189,6 @@ class IntcodeComputer:
     def getParameterMode(self, word, size):
         l1 =  [0 for x in range(size)]
         l2 =  [int(i) for i in word[:-2]]
-        print(l1, l2, len(l2), -len(l2))
         for x in range(-1,-len(l2)-1,-1):
             l1[x] = l2[x]
         return(l1)
