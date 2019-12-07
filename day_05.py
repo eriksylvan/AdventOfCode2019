@@ -33,8 +33,8 @@ def day05PartTwo():
 
 
 if __name__ == "__main__":
-    #day05PartOne()
-    #day05PartTwo()
+    day05PartOne()
+    day05PartTwo()
 
 
     

@@ -186,6 +186,7 @@ class IntcodeComputer:
         l2 =  [int(i) for i in word[:-2]]
         for x in range(-1,-len(l2)-1,-1):
             l1[x] = l2[x]
+        print(l1)
         return(l1)
         
 
