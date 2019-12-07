@@ -48,7 +48,7 @@ class IntcodeComputer:
         else: 
             f2 = p2
 
-        if paramode[-1] == 0:
+        if paramode[-3] == 0:
             self._intCodeProgram[p3] = int(f1 * f2)
         else: 
             self._intCodeProgram[self._memoryPosition + 3] = int(f1 * f2)
@@ -203,7 +203,7 @@ class IntcodeComputer:
         opword = str(self._intCodeProgram[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
-        # #print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\n')
+        # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgram[memPos:memPos+5]}\nm223:prg:{self._intCodeProgram[223]}\nm224:prg:{self._intCodeProgram[224]}\nm225:prg:{self._intCodeProgram[225]}\n')
         try:
             nextMemoryPosition = op(paramode) # Perform opeartion
             self._memoryPosition = nextMemoryPosition
@@ -223,6 +223,7 @@ class IntcodeComputer:
         self._memoryPosition = 0
         while not halt:
             halt = self.perform_one_operation(self._memoryPosition)
+        #    input('>')
         return True
         
 
