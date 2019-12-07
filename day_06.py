@@ -29,6 +29,8 @@ def countOutersteps(orbitDictonary,satellite,step,deeplist):
             step+=countOutersteps(orbitDictonary,nextSatellite,step, deeplist)          
     return step
 
+
+
 def noOfOrbits(orbitMap):
     orbitDictonary = defaultdict(list)
     for orbit in orbitMap:
@@ -40,8 +42,52 @@ def noOfOrbits(orbitMap):
     countOutersteps(orbitDictonary,satellite,1, deeplist) 
     return sum(deeplist)  
 
+########################################
+########################################
 
 
+def returnOrbitRoute(orbitDictonary, satellite, orbitRoute, EndPoint):
+    '''
+    Returns the path fom Center of Mass (COM) to 'EndPoint', represented as a list of satellites to pass.
+    '''
+    print (orbitDictonary)
+    for s in satellite:
+        orbitRoute.append(s)
+        print(f'Visiting: {s} orbitRoute:{orbitRoute}')
+        print(f'Child: {orbitDictonary.get(s,"Not centre")}')
+        if orbitDictonary.get(s,"Not centre")=="Not centre":
+            if s==EndPoint:
+                break
+        else:
+            nextSatellite=orbitDictonary.get(s)
+            orbitRoute.append(countOutersteps(orbitDictonary,nextSatellite,orbitRoute, EndPoint))
+    return orbitRoute
+
+def distanceSanta(orbitMap):
+    orbitDictonary = defaultdict(list)
+    for orbit in orbitMap:
+        centre=orbit.split(')')[0]
+        satellite=orbit.split(')')[1]
+        orbitDictonary[centre].append(satellite)
+    print(orbitDictonary)
+
+    satellite=orbitDictonary.get("COM")
+    youRoute = []
+#    youRoute=returnOrbitList(orbitMap,satellite,["COM"],'YOU')
+    
+    santaRoute = []    
+    satellite=orbitDictonary.get("COM")
+#    santaRoute=returnOrbitList(orbitMap,satellite,["COM"],'SAN')
+
+    return len(orbitMap)
+
+
+
+
+
+
+######################################
+######################################
 def day06PartOne():
     oMap = getInputData()
     # print(oMap)
@@ -50,8 +96,11 @@ def day06PartOne():
 
 
 def day06PartTwo():
-    answer = "unknown"
+    oMap = getInputData()
+    # print(oMap)
+    answer = distanceSanta(oMap)
     print(f'Solution Day 06, Part two:\nAnswer: {answer} \n\n')
+
 
 if __name__ == "__main__":
     day06PartOne()

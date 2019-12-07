@@ -8,7 +8,9 @@ class TestDay06(unittest.TestCase):
 
     def test_number_of_orbits(self):
         self.assertEqual(day_06.noOfOrbits(['COM)B','B)C','C)D','D)E','E)F','B)G','G)H','D)I','E)J','J)K','K)L])']), 42)
-      
+    
+    def test_distance_santa(self):
+        self.assertEqual(day_06.distanceSanta(['COM)B','B)C','C)D','D)E','E)F','B)G','G)H','D)I','E)J','J)K','K)L','K)YOU','I)SAN])']), 4)
 
 
         
