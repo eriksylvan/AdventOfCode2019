@@ -44,13 +44,8 @@ if __name__ == "__main__":
 # $ python day_05.py
 
 # Result
-# Output:3
-# Output:0
-# Output:0
-# Output:0
-# Output:0
-# Output:0
-# Output:0
-# Output:0
-# Output:0
+# part 1
 # Output:9006673
+#
+# part 2
+# Output:3629692

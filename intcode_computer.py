@@ -57,17 +57,13 @@ class IntcodeComputer:
             
         return self._memoryPosition + 4 
 
-    def inputOP(self, paramode, input = None):
-        print('InputOP')
-        print(f'input={int(input)}')
+    def inputOP(self, paramode, inp = None):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
-        if input is None:
-            print('FALSE')
+        if inp is None:
             i1 = int(input("?"))    # input from keyboard
             # Todo: check, only number 0-9
         else:
-            print('TRUE')
-            i1 = input              # ingut from inparameter
+            i1 = inp              # ingut from inparameter
         
         if paramode[-1] == 0:
             self._intCodeProgram[p1] = i1
@@ -210,7 +206,6 @@ class IntcodeComputer:
         
 
     def perform_one_operation(self, memPos, input = []):
-        print(f'Input:{input}')
         self._memoryPosition = memPos
         nextMemoryPosition = 0
         halt = False
@@ -221,10 +216,8 @@ class IntcodeComputer:
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgram[memPos:memPos+5]}\nm223:prg:{self._intCodeProgram[223]}\nm224:prg:{self._intCodeProgram[224]}\nm225:prg:{self._intCodeProgram[225]}\n')
         try:
             if op == self.inputOP:
-                if len(input) > 0:
-                                     
+                if len(input) > 0:              
                     inparam = input.pop(0)
-                    print(f'Inparam: {int(inparam)}') 
                 else:
                     inparam = None
                 nextMemoryPosition = op(paramode, inparam) # Perform opeartion
