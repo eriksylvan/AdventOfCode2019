@@ -12,6 +12,8 @@ class IntcodeComputer:
         '''
         self._intCodeProgram = program
         self._memoryPosition = 0
+        self._silent = False
+        self._output = []
 
     def addOP(self, paramode):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
@@ -55,10 +57,18 @@ class IntcodeComputer:
             
         return self._memoryPosition + 4 
 
-    def inputOP(self, paramode):
+    def inputOP(self, paramode, input = None):
+        print('InputOP')
+        print(f'input={int(input)}')
         p1 = self._intCodeProgram[self._memoryPosition + 1]
-        i1 = int(input("?"))
-        # Todo: check, only number 0-9
+        if input is None:
+            print('FALSE')
+            i1 = int(input("?"))    # input from keyboard
+            # Todo: check, only number 0-9
+        else:
+            print('TRUE')
+            i1 = input              # ingut from inparameter
+        
         if paramode[-1] == 0:
             self._intCodeProgram[p1] = i1
         else: 
@@ -71,7 +81,10 @@ class IntcodeComputer:
             o1 = self._intCodeProgram[p1]
         else:
             o1 = p1
-        print(f'Output:{o1}')
+        
+        self._output.append(o1)        
+        if self._silent == False:
+            print(f'Output:{o1}')
         return self._memoryPosition + 2
 
 #   Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothi  ng.
@@ -196,35 +209,44 @@ class IntcodeComputer:
         return(l1)
         
 
-    def perform_one_operation(self, memPos):
+    def perform_one_operation(self, memPos, input = []):
+        print(f'Input:{input}')
         self._memoryPosition = memPos
         nextMemoryPosition = 0
         halt = False
         opword = str(self._intCodeProgram[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
+      
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgram[memPos:memPos+5]}\nm223:prg:{self._intCodeProgram[223]}\nm224:prg:{self._intCodeProgram[224]}\nm225:prg:{self._intCodeProgram[225]}\n')
         try:
-            nextMemoryPosition = op(paramode) # Perform opeartion
+            if op == self.inputOP:
+                if len(input) > 0:
+                                     
+                    inparam = input.pop(0)
+                    print(f'Inparam: {int(inparam)}') 
+                else:
+                    inparam = None
+                nextMemoryPosition = op(paramode, inparam) # Perform opeartion
+            else:    
+                nextMemoryPosition = op(paramode) # Perform opeartion
             self._memoryPosition = nextMemoryPosition
         except Exception:
             print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgram[memPos:memPos+5]} ')
             halt = True
             raise
-            
-        
-
         if self._intCodeProgram[self._memoryPosition] == 99:
             halt = True
         return halt
 
-    def run_program(self):
+    def run_program(self, input=[]):
+        self._output = []
         halt = False
         self._memoryPosition = 0
         while not halt:
-            halt = self.perform_one_operation(self._memoryPosition)
+            halt = self.perform_one_operation(self._memoryPosition, input)
         #    input('>')
-        return True
+        return self._output
         
 
 

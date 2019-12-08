@@ -3,6 +3,7 @@
 import copy
 import itertools
 import random
+from intcode_computer import IntcodeComputer
 
 inputFile = 'input/07_input'
 
@@ -16,18 +17,24 @@ def getInputData():
     return data
 
 def getReturnValue(settingList,amplifierInputCopy):
-    return random.randint(0,9)
+    print(settingList)
+    IntComp = IntcodeComputer(amplifierInputCopy)
+    val = IntComp.run_program(settingList)
+    return val
 
 def maxThrusterSignal(amplifierController):
     thrusterDict={}
     for settingSequence in itertools.permutations([0,1,2,3,4], 5):
         amplifierInputCopy=copy.deepcopy(amplifierController)
-        inputOutputValue=0
+        inputValue=0
         for amplifier in range(5):
-            inputOutputValue=getReturnValue([settingSequence[amplifier],inputOutputValue],amplifierInputCopy)
-        thrusterDict[settingSequence]=inputOutputValue
+            output=getReturnValue([settingSequence[amplifier],inputValue],amplifierInputCopy)
+            inputValue = output[0]
+            print(f'INPUT:{inputValue}')
+        thrusterDict[settingSequence]=inputValue
     maxSetting=max(thrusterDict, key=thrusterDict.get)
     maxSignal=max(thrusterDict.values())
+    print(thrusterDict)
     print(maxSetting)
     print(maxSignal)
     return maxSignal
