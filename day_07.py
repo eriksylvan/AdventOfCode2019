@@ -39,6 +39,15 @@ def maxThrusterSignal(amplifierController):
     print(maxSignal)
     return maxSignal
 
+
+
+def maxThrusterSignalFeedbackLoop(acsProgram):
+    thrusterDict={}
+    for settingSequence in itertools.permutations([5,6,7,8,9], 5):
+        pass
+    return 0
+
+
 def day07PartOne():
     amplifierController = getInputData()
     # print(oMap)
