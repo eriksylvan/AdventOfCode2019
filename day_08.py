@@ -15,20 +15,6 @@ def getInputData():
 def test_layerFewest0(input):
     return 0
 
-# def buildLayerImage_old(imgStr, width, hight):
-#     l = len(imgStr)
-#     lay = l//(width*hight)
-#     print(f'LAY:{lay}')
-#     img=[]
-#     for i in range(0,lay):
-#         img.append([])
-#         for j in range(0,hight):
-#             r = i*hight*width+j*width
-#             print(i,j,r,r+width,imgStr[r:r+width])
-#             print(imgStr[i])
-#             img[i].append(imgStr[r:r+width])
-#     return img
-
 
 def buildLayerImageMatrix(imgStr, width, hight):
     '''
