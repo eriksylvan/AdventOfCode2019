@@ -213,7 +213,7 @@ class IntcodeComputer:
 
         if paramode[-2] == 0:
             v2 = self.readMem(p2)
-        elif paramode[-2] == 0: 
+        elif paramode[-2] == 1: 
             v2 = p2
         else: 
             v2 = self.readMem(p2 + self._relativeBase)
@@ -363,7 +363,7 @@ class IntcodeComputer:
         if self._intCodeProgramDict[self._memoryPosition] == 99:
             halt = True
 
-        # print(f'Program: {self._intCodeProgramDict}')
+        print(f'Program: {self._intCodeProgramDict}\n\n')
         return halt
 
     def run_program(self, inp=[]):
@@ -372,7 +372,7 @@ class IntcodeComputer:
         self._memoryPosition = 0
         while not halt:
             halt = self.perform_one_operation(self._memoryPosition, inp)
-            input('>')
+            # input('>')
         return self._output
         
 
