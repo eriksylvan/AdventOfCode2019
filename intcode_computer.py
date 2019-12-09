@@ -20,16 +20,10 @@ class IntcodeComputer:
         # and keys are enumerated index starting from 0 i.e. index position of element in list
         self._intCodeProgramDict = { i : self._intCodeProgram[i] for i in range(0, len(self._intCodeProgram) ) }
         print(self._intCodeProgramDict)
-        print(self._intCodeProgramDict[0])
-        # self._intCodeProgramDict[100] = '1'
-        try:
-            print(self._intCodeProgramDict[100])
-        except KeyError:
-            print("OOPS!!!")
+       
  
     def readMem(self, memPos):
         p = 0
-        print(f'POS:{memPos}')
         try:
             p = self._intCodeProgramDict[memPos]
         except KeyError:
@@ -43,7 +37,10 @@ class IntcodeComputer:
         pos = self._memoryPosition + offset
         p = self.readMem(pos)
         return p
-        
+
+##############
+# OPERATIONS #
+##############       
 
     
 
@@ -51,23 +48,30 @@ class IntcodeComputer:
         p1 = self.getParameter(1)
         p2 = self.getParameter(2)
         p3 = self.getParameter(3)
-        print(p1,p2,p3)
+        #print(p1,p2,p3)
         # ' p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         # ' p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         # ' p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             t1 = int(self.readMem(p1))
-        else: 
+        elif paramode[-1] == 1: 
             t1 = int(p1)
+        else:
+            t1 = int(self.readMem(p1 + self._relativeBase))
         
         if paramode[-2] == 0:
             t2 = int(self.readMem(p2))
-        else: 
+        elif paramode[-2] == 1: 
             t2 = int(p2)
+        else:
+            t2 = int(self.readMem(p2 + self._relativeBase))
+        
         if paramode[-3] == 0:
             self._intCodeProgramDict[p3] = int(t1 + t2)
-        else: 
+        elif paramode[-3] == 1: 
             self._intCodeProgramDict[self._memoryPosition + 3] = int(t1 + t2)
+        else :
+            self._intCodeProgramDict[p3 + self._relativeBase] = int(t1 + t2)
             
         return self._memoryPosition + 4 
         
@@ -116,8 +120,10 @@ class IntcodeComputer:
         # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if paramode[-1] == 0:
             o1 = self.readMem(p1)
-        else:
+        elif paramode[-1] == 1:
             o1 = p1
+        else: 
+            o1 = self.readMem(p1 + self._relativeBase)
         
         self._output.append(o1)        
         if self._silent == False:
@@ -215,7 +221,7 @@ class IntcodeComputer:
 #   Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or decreases, if the value is negative) by the value of the parameter.
     def adjustRelativeBaseOP(self, paramode):
         p1 = self.getParameter(1)
-        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # syp1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if paramode[-1] == 0:
             a = self.readMem(p1)
         else:
@@ -256,7 +262,7 @@ class IntcodeComputer:
             op = self.equalOP
             size = 4   
         elif opNo == 9:
-            op = self.outputOP
+            op = self.adjustRelativeBaseOP
             size = 1
         else:
             assert False, f'Invalid operation code ({opNo}).'
@@ -267,6 +273,7 @@ class IntcodeComputer:
         l2 =  [int(i) for i in word[:-2]]
         for x in range(-1,-len(l2)-1,-1):
             l1[x] = l2[x]
+        
         return(l1)
         
 
@@ -277,7 +284,15 @@ class IntcodeComputer:
         opword = str(self._intCodeProgramDict[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
-      
+        print(f'Operation:{opword}')
+        print(f'ParameterMode:{paramode}')
+        print(f'RelativeBase:{self._relativeBase}')
+        print(f'P1: {self.getParameter(1)}')
+        print(f'P2: {self.getParameter(2)}')
+        print(f'P3: {self.getParameter(3)}')
+        print(f'P4: {self.getParameter(4)}')
+        
+
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgramDict[memPos:memPos+5]}\nm223:prg:{self._intCodeProgramDict[223]}\nm224:prg:{self._intCodeProgramDict[224]}\nm225:prg:{self._intCodeProgramDict[225]}\n')
         try:
             if op == self.inputOP:
@@ -296,6 +311,8 @@ class IntcodeComputer:
             raise
         if self._intCodeProgramDict[self._memoryPosition] == 99:
             halt = True
+
+        print(f'Program: {self._intCodeProgramDict}')
         return halt
 
     def run_program(self, input=[]):

@@ -13,7 +13,7 @@ class TestDay09(unittest.TestCase):
         self.assertEqual(day_09.BOOSTkeycode([1001,100,2,100,4,100,99]),[2])
 
 
-    @unittest.skip("demonstrating skipping")
+    #   @unittest.skip("demonstrating skipping")
     def test_QuineComputing(self):
         self.assertEqual(day_09.BOOSTkeycode([109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]),[109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99])
 if __name__ == '__main__':
