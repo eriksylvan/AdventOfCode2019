@@ -14,6 +14,8 @@ class IntcodeComputer:
         self._memoryPosition = 0
         self._silent = False
         self._output = []           # list that holds the outputs
+        self._relativeBase = 0      # _relativeBase, used in 'relative mode'
+
 
     def addOP(self, paramode):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
@@ -163,6 +165,18 @@ class IntcodeComputer:
             self._intCodeProgram[p3] = 0
         return self._memoryPosition + 4   
 
+#   Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or decreases, if the value is negative) by the value of the parameter.
+    def adjustRelativeBaseOP(self, paramode):
+        p1 = self._intCodeProgram[self._memoryPosition + 1]
+        if paramode[-1] == 0:
+            a = self._intCodeProgram[p1]
+        else:
+            a = p1
+        self._relativeBase += a         # Adjusing the relative base
+        return self._memoryPosition + 2
+
+
+
 
 
 
@@ -193,6 +207,9 @@ class IntcodeComputer:
         elif opNo == 8:
             op = self.equalOP
             size = 4   
+        elif opNo == 9:
+            op = self.outputOP
+            size = 1
         else:
             assert False, f'Invalid operation code ({opNo}).'
         return op, size
