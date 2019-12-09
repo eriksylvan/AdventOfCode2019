@@ -53,6 +53,12 @@ class TestIntCodeComputer(unittest.TestCase):
         self.assertEqual(self.runIntCode([3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], input=[8]), [1000])
         self.assertEqual(self.runIntCode([3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], input=[90]), [1001])
     
+    # @unittest.skip("Skipping")
+    # Example 8, Lager program, input > 8 --> output 999, input == 8 --> output 1000, input > 8 --> output 1001
+    def test_comparation_memory_bound_relative(self):
+        self.assertEqual(self.runIntCode([209,9,22201,-40,-39,951,4,1001,99,50,13,19]),[32])
+        self.assertEqual(self.runIntCode([209,9,22202,-100,-99,100,204,100,99,110,3,99]),[297])
+
             # 1   addOP8
             # 2   multiplyOP
             # 3   inputOP

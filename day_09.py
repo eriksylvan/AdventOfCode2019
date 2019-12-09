@@ -14,15 +14,15 @@ def getInputData():
             data = [int(x) for x in line.split(',')]
     return data
 
-def BOOSTkeycode(intOpPrg):
+def BOOSTkeycode(intOpPrg,input):
     IntComp = IntcodeComputer(intOpPrg)
-    keycode = IntComp.run_program()
+    keycode = IntComp.run_program(inp = input)
     return keycode
 
 
 def day09PartOne():
     intOpPrg = getInputData()
-    answer = BOOSTkeycode(intOpPrg)
+    answer = BOOSTkeycode(intOpPrg,[1])
 
     print(f'Solution Day 09, Part one:\nAnswer: {answer} \n\n')
 
@@ -38,3 +38,6 @@ if __name__ == "__main__":
 
 # Run from terminal:
 # $ python day_09.py
+
+# Solution Day 09, Part one:
+# Answer: [3241900951]

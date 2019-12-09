@@ -69,6 +69,7 @@ class IntcodeComputer:
             t2 = int(p2)
         else:
             t2 = int(self.readMem(p2 + self._relativeBase))
+            print(t1,t2)
         
         if paramode[-3] == 0:
             self._intCodeProgramDict[p3] = int(t1 + t2)
@@ -275,8 +276,10 @@ class IntcodeComputer:
         # syp1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if paramode[-1] == 0:
             a = self.readMem(p1)
-        else:
+        elif paramode[-1] == 1:
             a = p1
+        else:
+            a = self.readMem(p1 + self._relativeBase)
         self._relativeBase += a         # Adjusing the relative base
         return self._memoryPosition + 2
 
@@ -381,58 +384,8 @@ class IntcodeComputer:
 
 
 if __name__ == "__main__":
-    print('\nMain\n\n')
-    # IntCode = IntcodeComputer([1105, 1, 4, 4, 99])
-    # # IntCode.perform_one_operation(0)
-    # IntCode.run_program()
-    # print(IntCode._intCodeProgram)
-
-    # # Example 1, input equal 8, Input == 8 -> 1
-    # print("Example 1, input equal 8, Input == 8 -> 1")
-    # IC = IntcodeComputer([3,9,8,9,10,9,4,9,99,-1,8])
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-    # # Example 2, input less than 8, Input == 8 --> 0 
-    # print("Example 2, input less than 8, Input == 8 --> 0")
-    # IC = IntcodeComputer([3,9,7,9,10,9,4,9,99,-1,8])
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-    # # Example 3, input equal 8, Input == 8 --> 0 
-    # print("Example 3, input equal 8, Input == 8 --> 0")
-    # IC = IntcodeComputer([3,3,1108,-1,8,3,4,3,99])
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-    # # Example 4, input less than 8, Input == 8 --> 0 
-    # print("Example 4, input less than 8, Input == 8 --> 0")
-    # IC = IntcodeComputer([3,3,1107,-1,8,3,4,3,99])
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-
-    # # Example 5, (using position mode), Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
-    # print('Example 5, (using position mode), Jump test Input == 0 --> 0, Input != 0 --> 1 )')
-    # IC = IntcodeComputer([3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9])
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-
-    # # Example 6, (using immediate  mode), Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
-    # print('Example 6, (using position mode), Jump test Input == 0 --> 0, Input != 0 --> 1 )')
-     
-    # IC = IntcodeComputer([3,3,1105,-1,9,1101,0,0,12,4,12,99,1]) 
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-    # # # Example 7, Lager program, input > 8 --> output 999, input == 8 --> output 1000, input > 8 --> output 1001
-    # print('Example 7, Lager program, input > 8 --> output 999, input == 8 --> output 1000, input > 8 --> output 1001')
-    # IC = IntcodeComputer([3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99])
-    # IC.run_program()
-    # print(IC._intCodeProgram)
-
-
+    print('\nMain _ IntCodeProgra\n\n')
+   
             # 1   addOP8
             # 2   multiplyOP
             # 3   inputOP
@@ -441,20 +394,4 @@ if __name__ == "__main__":
             # 6   jumpFalseOP
             # 7   lessOP
             # 8   equalOP
-        
-
-
-    # self.assertEqual(IC._intCodeProgram,[])
-        # self.assertEqual(IC._memoryPosition,4)
-
-
-
-        # value1 = intCodeProgram[intCodeProgram[position+1]]
-        # value2 = intCodeProgram[intCodeProgram[position+2]]
-        # outputPosition = intCodeProgram[position+3]
-        # if opcode == 1:
-        #     intCodeProgram[outputPosition] = value1+value2
-        # elif opcode == 2:
-        #     intCodeProgram[outputPosition] = value1*value2
-        # position = position+4
-        # return nextMemPos, halt 
+     
