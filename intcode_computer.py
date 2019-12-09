@@ -49,19 +49,19 @@ class IntcodeComputer:
 
     def addOP(self, paramode):
         p1 = self.getParameter(1)
-        print(f'P1:{p1}')
-        h = self.readMem(p1)
-        print(h)
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        p2 = self._intCodeProgramDict[self._memoryPosition + 2]
-        p3 = self._intCodeProgramDict[self._memoryPosition + 3]
+        p2 = self.getParameter(2)
+        p3 = self.getParameter(3)
+        print(p1,p2,p3)
+        # ' p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # ' p2 = self._intCodeProgramDict[self._memoryPosition + 2]
+        # ' p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
-            t1 = int(self._intCodeProgramDict[p1])
+            t1 = int(self.readMem(p1))
         else: 
             t1 = int(p1)
         
         if paramode[-2] == 0:
-            t2 = int(self._intCodeProgramDict[p2])
+            t2 = int(self.readMem(p2))
         else: 
             t2 = int(p2)
         if paramode[-3] == 0:
@@ -73,28 +73,32 @@ class IntcodeComputer:
         
 
     def multiplyOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        p2 = self._intCodeProgramDict[self._memoryPosition + 2]
-        p3 = self._intCodeProgramDict[self._memoryPosition + 3]
+        p1 = self.getParameter(1)
+        p2 = self.getParameter(2)
+        p3 = self.getParameter(3)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
+        # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
-            f1 = int(self._intCodeProgramDict[p1])
+            f1 = int(self.readMem(p1))
         else: 
             f1 = int(p1)
         
         if paramode[-2] == 0:
-            f2 = int(self._intCodeProgramDict[p2])
+            f2 = int(self.readMem(p2))
         else: 
             f2 = int(p2)
 
         if paramode[-3] == 0:
-            self._intCodeProgramDict[p3] = str(f1 * f2)
+            self._intCodeProgramDict[p3] = int(f1 * f2)
         else: 
             self._intCodeProgramDict[self._memoryPosition + 3] = int(f1 * f2)
             
         return self._memoryPosition + 4 
 
     def inputOP(self, paramode, inp = None):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        p1 = self.getParameter(1)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if inp is None:
             i1 = int(input("?"))    # input from keyboard
             # Todo: check, only number 0-9
@@ -108,9 +112,10 @@ class IntcodeComputer:
         return self._memoryPosition + 2
     
     def outputOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        p1 = self.getParameter(1)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if paramode[-1] == 0:
-            o1 = self._intCodeProgramDict[p1]
+            o1 = self.readMem(p1)
         else:
             o1 = p1
         
@@ -121,18 +126,18 @@ class IntcodeComputer:
 
 #   Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothi  ng.
     def jumpTrueOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        p2 = self._intCodeProgramDict[self._memoryPosition + 2]
+        p1 = self.getParameter(1)
+        p2 = self.getParameter(2)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         if paramode[-1] == 0:
-            b1 = int(self._intCodeProgramDict[p1])
+            b1 = int(self.readMem(p1))
         else: 
             b1 = int(p1)
         if paramode[-2] == 0:
-            pt1 = int(self._intCodeProgramDict[p2])
+            pt1 = int(self.readMem(p2))
         else: 
             pt1 = int(p2)
-
-
         if b1:
             nextMemPosition = pt1
         else:
@@ -143,14 +148,16 @@ class IntcodeComputer:
 
 #   Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
     def jumpFalseOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        p2 = self._intCodeProgramDict[self._memoryPosition + 2]
+        p1 = self.getParameter(1)
+        p2 = self.getParameter(2)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         if paramode[-1] == 0:
-            b1 = int(self._intCodeProgramDict[p1])
+            b1 = int(self.readMem(p1))
         else: 
             b1 = int(p1)
         if paramode[-2] == 0:
-            pt1 = int(self._intCodeProgramDict[p2])
+            pt1 = int(self.readMem(p2))
         else: 
             pt1 = int(p2)
 
@@ -163,15 +170,18 @@ class IntcodeComputer:
 
 #   Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
     def lessOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        p2 = self._intCodeProgramDict[self._memoryPosition + 2]
-        p3 = self._intCodeProgramDict[self._memoryPosition + 3]
+        p1 = self.getParameter(1)
+        p2 = self.getParameter(2)
+        p3 = self.getParameter(3)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
+        # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
-            v1 = self._intCodeProgramDict[p1]
+            v1 = self.readMem(p1)
         else: 
             v1 = p1
         if paramode[-2] == 0:
-            v2 = self._intCodeProgramDict[p2]
+            v2 = self.readMem(p2)
         else: 
             v2 = p2
         if v1<v2:
@@ -182,15 +192,18 @@ class IntcodeComputer:
 
 #   Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
     def equalOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        p2 = self._intCodeProgramDict[self._memoryPosition + 2]
-        p3 = self._intCodeProgramDict[self._memoryPosition + 3]
+        p1 = self.getParameter(1)
+        p2 = self.getParameter(2)
+        p3 = self.getParameter(3)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
+        # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
-            v1 = self._intCodeProgramDict[p1]
+            v1 = self.readMem(p1)
         else: 
             v1 = p1     
         if paramode[-2] == 0:
-            v2 = self._intCodeProgramDict[p2]
+            v2 = self.readMem(p2)
         else: 
             v2 = p2
         if v1==v2:
@@ -201,9 +214,10 @@ class IntcodeComputer:
 
 #   Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or decreases, if the value is negative) by the value of the parameter.
     def adjustRelativeBaseOP(self, paramode):
-        p1 = self._intCodeProgramDict[self._memoryPosition + 1]
+        p1 = self.getParameter(1)
+        # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if paramode[-1] == 0:
-            a = self._intCodeProgramDict[p1]
+            a = self.readMem(p1)
         else:
             a = p1
         self._relativeBase += a         # Adjusing the relative base
