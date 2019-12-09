@@ -16,7 +16,7 @@ def getInputData():
 
 def BOOSTkeycode(intOpPrg):
     IntComp = IntcodeComputer(intOpPrg)
-    keycode = IntComp.run_program([1])
+    keycode = IntComp.run_program()
     return keycode
 
 

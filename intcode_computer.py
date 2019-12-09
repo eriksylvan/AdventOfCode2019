@@ -22,6 +22,10 @@ class IntcodeComputer:
         print(self._intCodeProgramDict)
        
  
+    def writeMem(self, memPos, value, mode):
+        # TODO Implement
+        return 0
+
     def readMem(self, memPos):
         p = 0
         try:
@@ -254,12 +258,12 @@ class IntcodeComputer:
         if v1==v2:
             eq = 1
         else:
-            eq = 1
+            eq = 0
 
         if paramode[-3] == 0:
             self._intCodeProgramDict[p3] = eq
         elif paramode[-3] == 1:
-            self._intCodeProgramDict[self._memoryPosition + 3]
+            self._intCodeProgramDict[self._memoryPosition + 3] = eq
         else:
             self._intCodeProgramDict[p3 + self._relativeBase] = eq
 
@@ -304,10 +308,10 @@ class IntcodeComputer:
             size = 2    
         elif opNo == 7:
             op = self.lessOP
-            size = 4     
+            size = 3     
         elif opNo == 8:
             op = self.equalOP
-            size = 4   
+            size = 3   
         elif opNo == 9:
             op = self.adjustRelativeBaseOP
             size = 1
@@ -359,16 +363,16 @@ class IntcodeComputer:
         if self._intCodeProgramDict[self._memoryPosition] == 99:
             halt = True
 
-        print(f'Program: {self._intCodeProgramDict}')
+        # print(f'Program: {self._intCodeProgramDict}')
         return halt
 
-    def run_program(self, input=[]):
+    def run_program(self, inp=[]):
         self._output = []    # Clear the output list
         halt = False
         self._memoryPosition = 0
         while not halt:
-            halt = self.perform_one_operation(self._memoryPosition, input)
-        #    input('>')
+            halt = self.perform_one_operation(self._memoryPosition, inp)
+            input('>')
         return self._output
         
 
