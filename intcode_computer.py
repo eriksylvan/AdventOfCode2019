@@ -19,7 +19,7 @@ class IntcodeComputer:
         # Converting a list to dictionary with list elements as values in dictionary
         # and keys are enumerated index starting from 0 i.e. index position of element in list
         self._intCodeProgramDict = { i : self._intCodeProgram[i] for i in range(0, len(self._intCodeProgram) ) }
-        print(self._intCodeProgramDict)
+
        
  
     def writeMem(self, memPos, value, mode):
@@ -52,10 +52,6 @@ class IntcodeComputer:
         p1 = self.getParameter(1)
         p2 = self.getParameter(2)
         p3 = self.getParameter(3)
-        #print(p1,p2,p3)
-        # ' p1 = self._intCodeProgramDict[self._memoryPosition + 1]
-        # ' p2 = self._intCodeProgramDict[self._memoryPosition + 2]
-        # ' p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             t1 = int(self.readMem(p1))
         elif paramode[-1] == 1: 
@@ -69,7 +65,6 @@ class IntcodeComputer:
             t2 = int(p2)
         else:
             t2 = int(self.readMem(p2 + self._relativeBase))
-            print(t1,t2)
         
         if paramode[-3] == 0:
             self._intCodeProgramDict[p3] = int(t1 + t2)
@@ -338,13 +333,14 @@ class IntcodeComputer:
         opword = str(self._intCodeProgramDict[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
-        print(f'Operation:{opword}')
-        print(f'ParameterMode:{paramode}')
-        print(f'RelativeBase:{self._relativeBase}')
-        print(f'P1: {self.getParameter(1)}')
-        print(f'P2: {self.getParameter(2)}')
-        print(f'P3: {self.getParameter(3)}')
-        print(f'P4: {self.getParameter(4)}')
+        # DEBUG PRINTOUTS
+        # print(f'Operation:{opword}')
+        # print(f'ParameterMode:{paramode}')
+        # print(f'RelativeBase:{self._relativeBase}')
+        # print(f'P1: {self.getParameter(1)}')
+        # print(f'P2: {self.getParameter(2)}')
+        # print(f'P3: {self.getParameter(3)}')
+        # print(f'P4: {self.getParameter(4)}')
         
 
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgramDict[memPos:memPos+5]}\nm223:prg:{self._intCodeProgramDict[223]}\nm224:prg:{self._intCodeProgramDict[224]}\nm225:prg:{self._intCodeProgramDict[225]}\n')
@@ -365,8 +361,6 @@ class IntcodeComputer:
             raise
         if self._intCodeProgramDict[self._memoryPosition] == 99:
             halt = True
-
-        print(f'Program: {self._intCodeProgramDict}\n\n')
         return halt
 
     def run_program(self, inp=[]):

@@ -22,13 +22,16 @@ def BOOSTkeycode(intOpPrg,input):
 
 def day09PartOne():
     intOpPrg = getInputData()
+    # Run program with  input instruction the value 1
     answer = BOOSTkeycode(intOpPrg,[1])
 
     print(f'Solution Day 09, Part one:\nAnswer: {answer} \n\n')
 
 
 def day09PartTwo():
-    answer = "unknown"
+    intOpPrg = getInputData()
+    # Run program with  input instruction the value 2
+    answer = BOOSTkeycode(intOpPrg,[2])
     print(f'Solution Day 09, Part two:\nAnswer: {answer} \n\n')
 
 
