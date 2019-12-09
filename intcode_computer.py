@@ -13,7 +13,7 @@ class IntcodeComputer:
         self._intCodeProgram = program
         self._memoryPosition = 0
         self._silent = False
-        self._output = []
+        self._output = []           # list that holds the outputs
 
     def addOP(self, paramode):
         p1 = self._intCodeProgram[self._memoryPosition + 1]
@@ -233,7 +233,7 @@ class IntcodeComputer:
         return halt
 
     def run_program(self, input=[]):
-        self._output = []
+        self._output = []    # Clear the output list
         halt = False
         self._memoryPosition = 0
         while not halt:

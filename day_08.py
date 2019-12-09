@@ -1,6 +1,5 @@
 # https://adventofcode.com/2019/day/8
 
-import copy
 from PIL import Image, ImageDraw   # python -m pip install pillow
 
 inputFile = 'input/08_input'

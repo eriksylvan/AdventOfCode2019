@@ -56,6 +56,13 @@ def day07PartOne():
 
 
 def day07PartTwo():
+    '''
+    #########################
+    #  NOT YEY IMPLEMENTED  #
+    #########################
+    '''
+
+
     answer = "unknown"
     print(f'Solution Day XX, Part two:\nAnswer: {answer} \n\n')
 
