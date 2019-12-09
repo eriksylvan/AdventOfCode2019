@@ -85,18 +85,24 @@ class IntcodeComputer:
         # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             f1 = int(self.readMem(p1))
-        else: 
+        elif paramode[-1] == 1: 
             f1 = int(p1)
+        else:
+            f1 = int(self.readMem(p1+self._relativeBase))
         
         if paramode[-2] == 0:
             f2 = int(self.readMem(p2))
-        else: 
+        elif paramode[-2] == 1: 
             f2 = int(p2)
+        else:
+            f2 = int(self.readMem(p2+self._relativeBase))
 
         if paramode[-3] == 0:
             self._intCodeProgramDict[p3] = int(f1 * f2)
-        else: 
+        elif paramode[-3] == 1: 
             self._intCodeProgramDict[self._memoryPosition + 3] = int(f1 * f2)
+        else:
+            self._intCodeProgramDict[p3 + self._relativeBase] = int(f1 * f2)
             
         return self._memoryPosition + 4 
 
@@ -111,8 +117,10 @@ class IntcodeComputer:
         
         if paramode[-1] == 0:
             self._intCodeProgramDict[p1] = i1
-        else: 
+        elif paramode[-1] == 1: 
             self._intCodeProgramDict[self._memoryPosition + 1] = i1        
+        else:
+            self._intCodeProgramDict[p1 + self._relativeBase] = i1
         return self._memoryPosition + 2
     
     def outputOP(self, paramode):
@@ -138,12 +146,17 @@ class IntcodeComputer:
         # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         if paramode[-1] == 0:
             b1 = int(self.readMem(p1))
-        else: 
+        elif paramode[-1] == 1: 
             b1 = int(p1)
+        else:
+            b1 = int(self.readMem(p1 + self._relativeBase))
         if paramode[-2] == 0:
             pt1 = int(self.readMem(p2))
-        else: 
+        elif paramode[-2] == 1: 
             pt1 = int(p2)
+        else:
+            pt1 = int(self.readMem(p2 + self._relativeBase))
+
         if b1:
             nextMemPosition = pt1
         else:
@@ -160,12 +173,17 @@ class IntcodeComputer:
         # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         if paramode[-1] == 0:
             b1 = int(self.readMem(p1))
-        else: 
+        elif paramode[-1] == 1: 
             b1 = int(p1)
+        else:
+            b1 = int(self.readMem(p1 + self._relativeBase))
+
         if paramode[-2] == 0:
             pt1 = int(self.readMem(p2))
-        else: 
+        elif paramode[-2] == 1: 
             pt1 = int(p2)
+        else:
+            pt1 = int(self.readMem(p2+self._relativeBase))
 
 
         if not b1:
@@ -184,17 +202,32 @@ class IntcodeComputer:
         # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             v1 = self.readMem(p1)
-        else: 
+        elif paramode[-1] == 1: 
             v1 = p1
+        else:
+            v1 = self.readMem(p1 + self._relativeBase)
+
         if paramode[-2] == 0:
             v2 = self.readMem(p2)
-        else: 
+        elif paramode[-2] == 0: 
             v2 = p2
+        else: 
+            v2 = self.readMem(p2 + self._relativeBase)
+
         if v1<v2:
-            self._intCodeProgramDict[p3] = 1
+            ls = 1
         else:
-            self._intCodeProgramDict[p3] = 0
+            ls = 0
+
+        if paramode[-3] == 0:
+            self._intCodeProgramDict[p3] = ls
+        elif paramode[-3] == 1:
+            self._intCodeProgramDict[self._memoryPosition + 3] = ls
+        else:
+            self._intCodeProgramDict[p3 + self._relativeBase] = ls
+        
         return self._memoryPosition + 4 
+
 
 #   Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
     def equalOP(self, paramode):
@@ -206,16 +239,30 @@ class IntcodeComputer:
         # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             v1 = self.readMem(p1)
-        else: 
+        elif paramode[-1] == 1: 
             v1 = p1     
+        else:
+            v1 = self.readMem(p1 + self._relativeBase)
+
         if paramode[-2] == 0:
             v2 = self.readMem(p2)
-        else: 
+        elif paramode[-2] == 1: 
             v2 = p2
-        if v1==v2:
-            self._intCodeProgramDict[p3] = 1
         else:
-            self._intCodeProgramDict[p3] = 0
+            v2 = self.readMem(p2 + self._relativeBase)
+
+        if v1==v2:
+            eq = 1
+        else:
+            eq = 1
+
+        if paramode[-3] == 0:
+            self._intCodeProgramDict[p3] = eq
+        elif paramode[-3] == 1:
+            self._intCodeProgramDict[self._memoryPosition + 3]
+        else:
+            self._intCodeProgramDict[p3 + self._relativeBase] = eq
+
         return self._memoryPosition + 4   
 
 #   Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or decreases, if the value is negative) by the value of the parameter.
