@@ -44,3 +44,6 @@ if __name__ == "__main__":
 
 # Solution Day 09, Part one:
 # Answer: [3241900951]
+
+# Solution Day 09, Part two:
+# Answer: [83089]
