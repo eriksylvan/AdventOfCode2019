@@ -1,4 +1,4 @@
-
+import random
 
 class IntcodeComputer:
     '''
@@ -80,13 +80,11 @@ class IntcodeComputer:
         p1 = self.getParameter(1)
         p2 = self.getParameter(2)
         p3 = self.getParameter(3)
-        print(paramode)
         # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             f1 = int(self.readMem(p1))
-            print(f"f1={f1}")
         elif paramode[-1] == 1: 
             f1 = int(p1)
         else:
@@ -97,14 +95,11 @@ class IntcodeComputer:
         elif paramode[-2] == 1: 
            
             f2 = int(p2)
-            print(f"f2={f2}")
         else:
             f2 = int(self.readMem(p2+self._relativeBase))
 
         if paramode[-3] == 0:
-            print(int(f1 * f2))
             self._intCodeProgramDict[p3] = int(f1 * f2)
-            print(f"result,p3={self._intCodeProgramDict[p3]},{p3}")
         elif paramode[-3] == 1: 
             self._intCodeProgramDict[self._memoryPosition + 3] = int(f1 * f2)
         else:
@@ -138,7 +133,7 @@ class IntcodeComputer:
             o1 = p1
         else: 
             o1 = self.readMem(p1 + self._relativeBase)
-        
+        print(f'O1:{o1}')
         self._output.append(o1)        
         if self._silent == False:
             print(f'Output:{o1}')
@@ -261,14 +256,12 @@ class IntcodeComputer:
             eq = 1
         else:
             eq = 0
-
         if paramode[-3] == 0:
             self._intCodeProgramDict[p3] = eq
         elif paramode[-3] == 1:
             self._intCodeProgramDict[self._memoryPosition + 3] = eq
         else:
             self._intCodeProgramDict[p3 + self._relativeBase] = eq
-
         return self._memoryPosition + 4   
 
 #   Opcode 9 adjusts the relative base by the value of its only parameter. The relative base increases (or decreases, if the value is negative) by the value of the parameter.
@@ -337,24 +330,25 @@ class IntcodeComputer:
         return(l1)
         
 
-    def perform_one_operation(self, memPos=None, input = []):
+    def perform_one_operation(self, memPos=None, input = [], stopAtInput = False):
         if memPos: 
             self._memoryPosition = memPos
-            print('no mem pos')
         nextMemoryPosition = 0
         halt = False
+        terminate = False
+        stoppedAtInput = False
         opword = str(self._intCodeProgramDict[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
         # DEBUG PRINTOUTS
-        print(f'Operation:{opword}')
-        print(f'ParameterMode:{paramode}')
-        print(f'RelativeBase:{self._relativeBase}')
-        print(f'P1: {self.getParameter(1)}')
-        print(f'P2: {self.getParameter(2)}')
-        print(f'P3: {self.getParameter(3)}')
-        print(f'P4: {self.getParameter(4)}')
-        print(f'halt: {halt}')
+        # print(f'Operation:{opword}')
+        # print(f'ParameterMode:{paramode}')
+        # print(f'RelativeBase:{self._relativeBase}')
+        # print(f'P1: {self.getParameter(1)}')
+        # print(f'P2: {self.getParameter(2)}')
+        # print(f'P3: {self.getParameter(3)}')
+        # print(f'P4: {self.getParameter(4)}')
+        # print(f'halt: {halt}')
         
 
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgramDict[memPos:memPos+5]}\nm223:prg:{self._intCodeProgramDict[223]}\nm224:prg:{self._intCodeProgramDict[224]}\nm225:prg:{self._intCodeProgramDict[225]}\n')
@@ -362,38 +356,57 @@ class IntcodeComputer:
             
             if op == self.exitOP:
                 nextMemoryPosition = self._memoryPosition
-                halt = True
+                terminate = True
             elif op == self.inputOP:
                 if len(input) > 0:              
                     inparam = input.pop(0)
+                    nextMemoryPosition = op(paramode, inparam) # Perform opeartion
                 else:
-                    inparam = None
-                nextMemoryPosition = op(paramode, inparam) # Perform opeartion
+                    if stopAtInput:
+                        print("Stop at input")                
+                        # Stop at input. This makes it possible for surrounding code to privide new inparameters.False
+                        nextMemoryPosition = self._memoryPosition # keep memory position
+                        stoppedAtInput = True
+                        # do not perform operation
+                    
+                    else:    
+                        inparam = None
+                        nextMemoryPosition = op(paramode, inparam) # Perform opeartion
             else:    
                 nextMemoryPosition = op(paramode) # Perform opeartion
-                print(self._intCodeProgramDict)
             self._memoryPosition = nextMemoryPosition
         except Exception:
             print("ERROR")
             # print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos:memPos+5]} ')
             print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos]} ')
-            halt = True
+            # halt = True
             raise
-
-        print(self._intCodeProgramDict)
-        print(halt)
-        return halt
+        return terminate, stoppedAtInput
 
     def run_program(self, inp=[]):
         self._output = []    # Clear the output list
-        halt = False
+        terminate = False
         self._memoryPosition = 0
-        while not halt:
-            halt = self.perform_one_operation(self._memoryPosition, inp)
+        while not terminate:
+            terminate, stoppedAtInput = self.perform_one_operation(self._memoryPosition, inp)
             # input('>')
         return self._output
         
-
+    def continue_to_input(self, inp=[]):
+        self._output = []    # Clear the output list
+        terminate = False
+        stopedAtInput = False
+        while not terminate:
+            terminate, stoppedAtInput = self.perform_one_operation(self._memoryPosition, inp, stopAtInput = True)
+            print(terminate, stopedAtInput)
+            if stoppedAtInput:
+                print(f'memPos:{self._memoryPosition}')
+                print(f'OutPut{self._output}')
+                inpInt = random.randint(0,1)
+                input(f'Input: {inpInt}>')
+                inp = [inpInt]
+        return self._output
+    
 
 
 
@@ -409,4 +422,5 @@ if __name__ == "__main__":
             # 6   jumpFalseOP
             # 7   lessOP
             # 8   equalOP
-     
+            # 9   adjustRelativeBaseOP
+            #10   exitOP

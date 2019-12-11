@@ -38,12 +38,16 @@ def startRobot():
     code = getInputData()
     IC = IntcodeComputer(code)
     
-    IC.perform_one_operation()
+    output = IC.continue_to_input([0]) #black
     
+    print(output)
 
 if __name__ == "__main__":
-    day11PartOne()
-    day11PartTwo()
+    startRobot()
+
+    # day11PartOne()
+    # day11PartTwo()
 
 # Run from terminal:
 # $ python day_11#.py
+
