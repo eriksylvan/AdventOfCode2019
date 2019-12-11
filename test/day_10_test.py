@@ -21,7 +21,7 @@ class TestDay10(unittest.TestCase):
 
     @unittest.skip("Skip")
     def test_test_AstroidMap100(self):
-        self.assertEqual(day_10.contVisibleAsroids(AstridMap100),(100,(99,99)))
+        self.assertEqual(day_10.findBestMonitoringStation(AstridMap100),(100,(99,99)))
         
         
 if __name__ == '__main__':
