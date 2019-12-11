@@ -15,7 +15,7 @@ class TestDay09(unittest.TestCase):
 
     #   @unittest.skip("demonstrating skipping")
     def test_QuineComputing(self):
-        self.assertEqual(day_09.BOOSTkeycode([109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]),[109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99])
+        self.assertEqual(day_09.BOOSTkeycode([109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99],[]),[109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99])
 if __name__ == '__main__':
     unittest.main()
 

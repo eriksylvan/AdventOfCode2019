@@ -1,6 +1,8 @@
 # https://adventofcode.com/2019/day/11
 
 import copy
+from intcode_computer import IntcodeComputer
+
 
 inputFile = 'input/11_input'
 
@@ -32,6 +34,12 @@ def day11PartTwo():
     answer = "unknown"
     print(f'Solution Day 11, Part two:\nAnswer: {answer} \n\n')
 
+def startRobot():
+    code = getInputData()
+    IC = IntcodeComputer(code)
+    
+    IC.perform_one_operation()
+    
 
 if __name__ == "__main__":
     day11PartOne()

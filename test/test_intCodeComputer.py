@@ -59,6 +59,10 @@ class TestIntCodeComputer(unittest.TestCase):
         self.assertEqual(self.runIntCode([209,9,22201,-40,-39,951,4,1001,99,50,13,19]),[32])
         self.assertEqual(self.runIntCode([209,9,22202,-100,-99,100,204,100,99,110,3,99]),[297])
 
+    # Test immidiate exit
+    def test_exit(self):
+        self.assertEqual(self.runIntCode([99,1,2,3,4,5,6,7]),[])
+    
             # 1   addOP8
             # 2   multiplyOP
             # 3   inputOP

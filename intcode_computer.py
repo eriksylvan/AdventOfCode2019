@@ -80,11 +80,13 @@ class IntcodeComputer:
         p1 = self.getParameter(1)
         p2 = self.getParameter(2)
         p3 = self.getParameter(3)
+        print(paramode)
         # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         # p2 = self._intCodeProgramDict[self._memoryPosition + 2]
         # p3 = self._intCodeProgramDict[self._memoryPosition + 3]
         if paramode[-1] == 0:
             f1 = int(self.readMem(p1))
+            print(f"f1={f1}")
         elif paramode[-1] == 1: 
             f1 = int(p1)
         else:
@@ -93,12 +95,16 @@ class IntcodeComputer:
         if paramode[-2] == 0:
             f2 = int(self.readMem(p2))
         elif paramode[-2] == 1: 
+           
             f2 = int(p2)
+            print(f"f2={f2}")
         else:
             f2 = int(self.readMem(p2+self._relativeBase))
 
         if paramode[-3] == 0:
+            print(int(f1 * f2))
             self._intCodeProgramDict[p3] = int(f1 * f2)
+            print(f"result,p3={self._intCodeProgramDict[p3]},{p3}")
         elif paramode[-3] == 1: 
             self._intCodeProgramDict[self._memoryPosition + 3] = int(f1 * f2)
         else:
@@ -279,6 +285,8 @@ class IntcodeComputer:
         return self._memoryPosition + 2
 
 
+    def exitOP(self, paramode):
+        return self._memoryPosition
 
 
 
@@ -313,6 +321,9 @@ class IntcodeComputer:
         elif opNo == 9:
             op = self.adjustRelativeBaseOP
             size = 1
+        elif opNo == 99:
+            op = self.exitOP
+            size = 0
         else:
             assert False, f'Invalid operation code ({opNo}).'
         return op, size
@@ -326,26 +337,33 @@ class IntcodeComputer:
         return(l1)
         
 
-    def perform_one_operation(self, memPos, input = []):
-        self._memoryPosition = memPos
+    def perform_one_operation(self, memPos=None, input = []):
+        if memPos: 
+            self._memoryPosition = memPos
+            print('no mem pos')
         nextMemoryPosition = 0
         halt = False
         opword = str(self._intCodeProgramDict[self._memoryPosition])
         op, opsize = self.getoperation(opword)
         paramode = self.getParameterMode(opword, opsize)
         # DEBUG PRINTOUTS
-        # print(f'Operation:{opword}')
-        # print(f'ParameterMode:{paramode}')
-        # print(f'RelativeBase:{self._relativeBase}')
-        # print(f'P1: {self.getParameter(1)}')
-        # print(f'P2: {self.getParameter(2)}')
-        # print(f'P3: {self.getParameter(3)}')
-        # print(f'P4: {self.getParameter(4)}')
+        print(f'Operation:{opword}')
+        print(f'ParameterMode:{paramode}')
+        print(f'RelativeBase:{self._relativeBase}')
+        print(f'P1: {self.getParameter(1)}')
+        print(f'P2: {self.getParameter(2)}')
+        print(f'P3: {self.getParameter(3)}')
+        print(f'P4: {self.getParameter(4)}')
+        print(f'halt: {halt}')
         
 
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgramDict[memPos:memPos+5]}\nm223:prg:{self._intCodeProgramDict[223]}\nm224:prg:{self._intCodeProgramDict[224]}\nm225:prg:{self._intCodeProgramDict[225]}\n')
         try:
-            if op == self.inputOP:
+            
+            if op == self.exitOP:
+                nextMemoryPosition = self._memoryPosition
+                halt = True
+            elif op == self.inputOP:
                 if len(input) > 0:              
                     inparam = input.pop(0)
                 else:
@@ -353,14 +371,17 @@ class IntcodeComputer:
                 nextMemoryPosition = op(paramode, inparam) # Perform opeartion
             else:    
                 nextMemoryPosition = op(paramode) # Perform opeartion
+                print(self._intCodeProgramDict)
             self._memoryPosition = nextMemoryPosition
         except Exception:
+            print("ERROR")
             # print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos:memPos+5]} ')
             print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos]} ')
             halt = True
             raise
-        if self._intCodeProgramDict[self._memoryPosition] == 99:
-            halt = True
+
+        print(self._intCodeProgramDict)
+        print(halt)
         return halt
 
     def run_program(self, inp=[]):
