@@ -4,13 +4,13 @@ import day_09
 class TestDay09(unittest.TestCase):
     
     def test_LargeAddition(self):
-        self.assertEqual(day_09.BOOSTkeycode([1102,34915192,34915192,7,4,7,99,0]), [1219070632396864])
+        self.assertEqual(day_09.BOOSTkeycode([1102,34915192,34915192,7,4,7,99,0],[]), [1219070632396864])
 
     def test_LargeOutput(self):
-        self.assertEqual(day_09.BOOSTkeycode([104,1125899906842624,99]),[1125899906842624])
+        self.assertEqual(day_09.BOOSTkeycode([104,1125899906842624,99],[]),[1125899906842624])
 
     def test_memoryOutboundReference(self):
-        self.assertEqual(day_09.BOOSTkeycode([1001,100,2,100,4,100,99]),[2])
+        self.assertEqual(day_09.BOOSTkeycode([1001,100,2,100,4,100,99],[]),[2])
 
 
     #   @unittest.skip("demonstrating skipping")
