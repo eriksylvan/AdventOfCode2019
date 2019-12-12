@@ -152,7 +152,7 @@ def printMap(panel):
 def day11PartOne():
     answer, m = startRobot()
     print(f'Solution Day 11, Part one:\nAnswer: {answer} \n\n')
-    printMap(m)
+    # printMap(m)
 
 def day11PartTwo():
     answer, m = startRobot(defaultColor=1) # default color white
