@@ -25,7 +25,8 @@ class SolarPanelMap:
             self._currentPositionX += 1   # x + 1 
         else:
             assert False, 'Direction error'
-        if not (self._currentPositionX, self._currentPositionY) in self._panelMap: self._panelMap = {(self._currentPositionX, self._currentPositionY):0} # add black 
+        if not (self._currentPositionX, self._currentPositionY) in self._panelMap: 
+            self._panelMap[(self._currentPositionX, self._currentPositionY)] = 0 # add black 
 
     def turnLeft(self):
         if self._currentDirection == 'U':
@@ -58,10 +59,10 @@ class SolarPanelMap:
             assert False, 'Direction error'
     
     def paintBlack(self):
-        self._panelMap = {(self._currentPositionX,self._currentPositionY):0}
+        self._panelMap[(self._currentPositionX,self._currentPositionY)] = 0
 
     def paintWhite(self):
-        self._panelMap = {(self._currentPositionX,self._currentPositionY):1}
+        self._panelMap[(self._currentPositionX,self._currentPositionY)] = 1
 
     def getColor(self):
         return self._panelMap.get((self._currentPositionX,self._currentPositionY))
@@ -107,17 +108,16 @@ def startRobot():
     terminate = False
     stoppedAtInput = False
     while not terminate:
-        while not stoppedAtInput:
-            print(inp)
+        while not stoppedAtInput and not terminate:
             terminate, stoppedAtInput = IC.perform_one_operation(IC._memoryPosition, inp, stopAtInput = True) 
         step +=1
-        print(f'### STEP {step} ###')
-        print(f'OutPut{IC._output}')
+        # print(f'### STEP {step} ###')
+        # print(f'OutPut{IC._output}')
         paintBlack = IC._output.pop(0) == 0
-        print(f'OutPut{IC._output}')        
+        # print(f'OutPut{IC._output}')        
 
         turnLeft = (IC._output.pop(0) == 0)
-        print(f'OutPut{IC._output}')
+        # print(f'OutPut{IC._output}')
         
         if paintBlack: 
             robotOnMap.paintBlack()
@@ -134,7 +134,8 @@ def startRobot():
         color = robotOnMap.getColor() # 0=black, 1=white
         inp = [color]
         stoppedAtInput = False
-        input(f'{color}:>')
+    
+    print(f'Robot: {len(robotOnMap._panelMap)}')
 
 
 
