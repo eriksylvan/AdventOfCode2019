@@ -133,10 +133,9 @@ class IntcodeComputer:
             o1 = p1
         else: 
             o1 = self.readMem(p1 + self._relativeBase)
-        print(f'O1:{o1}')
         self._output.append(o1)        
         if self._silent == False:
-            print(f'Output:{o1}')
+            print(f'Output: {o1}')
         return self._memoryPosition + 2
 
 #   Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothi  ng.
@@ -363,7 +362,6 @@ class IntcodeComputer:
                     nextMemoryPosition = op(paramode, inparam) # Perform opeartion
                 else:
                     if stopAtInput:
-                        print("Stop at input")                
                         # Stop at input. This makes it possible for surrounding code to privide new inparameters.False
                         nextMemoryPosition = self._memoryPosition # keep memory position
                         stoppedAtInput = True
@@ -392,20 +390,20 @@ class IntcodeComputer:
             # input('>')
         return self._output
         
-    def continue_to_input(self, inp=[]):
-        self._output = []    # Clear the output list
-        terminate = False
-        stopedAtInput = False
-        while not terminate:
-            terminate, stoppedAtInput = self.perform_one_operation(self._memoryPosition, inp, stopAtInput = True)
-            print(terminate, stopedAtInput)
-            if stoppedAtInput:
-                print(f'memPos:{self._memoryPosition}')
-                print(f'OutPut{self._output}')
-                inpInt = random.randint(0,1)
-                input(f'Input: {inpInt}>')
-                inp = [inpInt]
-        return self._output
+    # def continue_to_input(self, inp=[]):
+    #     self._output = []    # Clear the output list
+    #     terminate = False
+    #     stopedAtInput = False
+    #     while not terminate:
+    #         terminate, stoppedAtInput = self.perform_one_operation(self._memoryPosition, inp, stopAtInput = True)
+    #         print(terminate, stopedAtInput)
+    #         if stoppedAtInput:
+    #             print(f'memPos:{self._memoryPosition}')
+    #             print(f'OutPut{self._output}')
+    #             inpInt = random.randint(0,1)
+    #             input(f'Input: {inpInt}>')
+    #             inp = [inpInt]
+    #     return self._output
     
 
 
