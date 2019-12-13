@@ -4,7 +4,7 @@ import day_11
 class TestDay11(unittest.TestCase):
     
 
-   # @unittest.skip("Skip")
+    @unittest.skip("Skip")
     def test_painting_robot(self):
         self.assertEqual(day_11.getAnwer(1),0)
 

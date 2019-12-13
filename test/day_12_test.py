@@ -63,6 +63,14 @@ class TestDay12(unittest.TestCase):
         self.assertEqual(eTot, 1940)
 
 
+    def test_example1_repeat(self):
+        steps = day_12.stepsUntilPosRepeat(example1)
+        self.assertEqual(steps, 2772)
+
+    @unittest.skip("Skip takes too long time")
+    def test_example2_repeat(self):
+        steps = day_12.stepsUntilPosRepeat(example2)
+        self.assertEqual(steps, 4686774924)
 
 ###############################
 # Testinput

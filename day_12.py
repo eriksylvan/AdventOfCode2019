@@ -69,7 +69,7 @@ def newPlanetPositions(planets):
     
     newPlanetPos = []
     for planet in planets:
-        newPlanetPos.append(planet.position)
+        newPlanetPos.append(planet._position)
 
     return newPlanetPos
     
@@ -90,16 +90,18 @@ def getPlanestData(inData, steps):
         eTot += planet.energy()
     return eTot, outData
 
-def stepsUntilPosRepeat(inData):
+def stepsUntilPosRepeat(planetsStartPos):
     planets = []
     for i in range(4):
-        planets.append(Planet(planetsStartPos[i],[0,0,0]))
+        planets.append(Planet(copy.deepcopy(planetsStartPos[i]),[0,0,0]))
 
     planetsPos = []
-    stepcount=0
+    stepcount=3
+    planetsPos = newPlanetPositions(planets)
+    planetsPos = newPlanetPositions(planets)
     while planetsStartPos != planetsPos:
-        planetsPos = newPlanetPositions(planets)
         stepcount += 1
+        planetsPos = newPlanetPositions(planets)
     return stepcount
 
 
@@ -111,33 +113,14 @@ def day12PartOne():
 
 def day12PartTwo():
     planetsStartPos = [[-1,-4,0],[4,7,-1],[-14,-10,9],[1,2,17]]
-  
-
-
-    planets = []
-    for i in range(4):
-        planets.append(Planet(planetsStartPos[i],[0,0,0]))
-
-    planetsPos = []
-    stepcount=0
-    while planetsStartPos != planetsPos:
-        planetsPos = newPlanetPositions(planets)
-        stepcount += 1
-
-
-
-
-
-
-
-
-    answer = "unknown"
+    #example1 = [[-1, 0, 2], [2, -10, -7], [4, -8, 8], [3, 5, -1]]
+    answer = stepsUntilPosRepeat(planetsStartPos)
     print(f'Solution Day 12, Part two:\nAnswer: {answer} \n\n')
 
 
 if __name__ == "__main__":
-    day12PartOne()
-    # day12PartTwo()
+    #day12PartOne()
+    day12PartTwo()
 
   
 
