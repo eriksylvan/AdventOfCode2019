@@ -22,8 +22,8 @@ class IntcodeComputer:
 
        
  
-    def writeMem(self, memPos, value, mode):
-        # TODO Implement
+    def writeMem(self, memPos, value):
+        self._intCodeProgramDict[memPos] = value
         return 0
 
     def readMem(self, memPos):
@@ -357,6 +357,7 @@ class IntcodeComputer:
                 nextMemoryPosition = self._memoryPosition
                 terminate = True
             elif op == self.inputOP:
+                print('input')
                 if len(input) > 0:              
                     inparam = input.pop(0)
                     nextMemoryPosition = op(paramode, inparam) # Perform opeartion

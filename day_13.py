@@ -31,13 +31,15 @@ class PILScreen():
         h = 600 
         self._img = Image.new("RGB", (w, h)) 
         self._imgD = ImageDraw.Draw(self._img) 
-        self._side = 20
+
         
         
         
     def drawBrick(self ,x ,y ,t):
         shape = [(self._side * x, self._side * y), ((self._side * x + self._side, self._side * y + self._side))]
-        if t == 1:
+        if t == 0:
+            self._imgD.rectangle(shape, fill="black", outline="black")
+        elif t == 1:
             self._imgD.rectangle(shape, fill="gray", outline="red")
         elif t == 2:
             self._imgD.rectangle(shape, fill="yellow", outline="red")
@@ -68,7 +70,10 @@ def runGame():
     game = PILScreen()
     count = 0
 
+    paddlePos = 0
 
+    # Set memory position 0 to 2, to play for free
+    # IC.writeMem(0,2)
 
 
     ##################
@@ -78,25 +83,35 @@ def runGame():
     terminate = False
     stoppedAtInput = False
     while not terminate:
-
-
-        # while not stoppedAtInput and not terminate:
-        #     terminate, stoppedAtInput = IC.perform_one_operation(IC._memoryPosition, inp, stopAtInput = True) 
-        
         length = 0
         while length < 3 and not terminate:
-            terminate, stoppedAtInput = IC.perform_one_operation(IC._memoryPosition, inp, stopAtInput = True) 
+            print(IC._memoryPosition)
+            terminate, stoppedAtInput = IC.perform_one_operation(input = inp, stopAtInput = True) 
             length = len(IC._output)
+
+        
         print(f'OutPut: {IC._output}')
-        print(terminate)
+        print(f'Terminate: {terminate}')
+        print(f'stoppedAtInput: {stoppedAtInput}')
+        print(f'count: {count}')
+        print(f'Next instr: {IC._intCodeProgramDict[IC._memoryPosition]}')
+        print(f'Next memPos:{IC._memoryPosition}')
+        
+
+        if terminate: break
+
         try:
             x = IC._output[0]
             y = IC._output[1]
             t = IC._output[2]
             IC._output = [] 
-            
         except Exception:
-            game.show()
+            print('EXCEPTION')
+            break
+            #game.show()
+
+        
+        
 
         ########   TILES
         #    
@@ -106,23 +121,24 @@ def runGame():
         #   3 is a horizontal paddle tile. The paddle is indestructible.
         #   4 is a ball tile. The ball moves diagonally and bounces off objects.    
         
+        if t == 3:
+            paddlePos = x
+            print("PADDLEPOS")
+
+        if t == 4:
+            if paddlePos < x: inp = [1]
+            elif paddlePos > x: inp = [-1]
+            else: inp = [0] 
+
         if x == -1 and y == 0:
             score = t
+            print(f'score:{score}')
         else:
-            if t == 2:
-                count += 1
+            if t == 2: count += 1
             if t != 0:
                 game.drawBrick(x,y,t)
-            
-        #time.sleep(0.5)
-
         
-        # step +=1
-        # #inp = [color]
-        # stoppedAtInput = False
-
-        # print(f'OutPut: {IC._output}')
-    
+    game.show()
     return count
 
     ##################
