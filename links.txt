@@ -1,0 +1,4 @@
+n-body problem
+
+https://stackoverflow.com/questions/52562117/efficiently-compute-n-body-gravitation-in-python
+https://en.wikipedia.org/wiki/N-body_problem

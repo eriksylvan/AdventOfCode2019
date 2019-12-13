@@ -126,7 +126,7 @@ def drawWire(cp, wire2, draw, scale, color):
         elif direction == 'R':
             newy = y + distance
         draw.line((int(x/scale), int(y/scale), int(newx/scale),
-                   int(newy/scale)), fill=color, width=4)
+                   int(newy/scale)), fill=color, width=1)
         x = copy.deepcopy(newx)
         y = copy.deepcopy(newy)
 
