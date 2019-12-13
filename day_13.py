@@ -106,11 +106,14 @@ def runGame():
         #   3 is a horizontal paddle tile. The paddle is indestructible.
         #   4 is a ball tile. The ball moves diagonally and bounces off objects.    
         
-        if t == 2:
-            count += 1
-        if t != 0:
-            game.drawBrick(x,y,t)
-        
+        if x == -1 and y == 0:
+            score = t
+        else:
+            if t == 2:
+                count += 1
+            if t != 0:
+                game.drawBrick(x,y,t)
+            
         #time.sleep(0.5)
 
         
