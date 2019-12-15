@@ -13,11 +13,20 @@ class TestDay14(unittest.TestCase):
     def test_createChemical_getFromStorage(self):
         self.assertEqual(day_14.createChemical('LEAD',4,storage={'LEAD':8},reactios={}, oreUsed=0), 0)
 
-    def test_createChemical_lookupReaction(self):
+    def test_createChemical_reactions2_fuel(self):
         self.assertEqual(day_14.createChemical('FUEL',1,storage={},reactios=reactions2, oreUsed=0), 165 )
 
     def test_createChemical_reactions1_fuel(self):
         self.assertEqual(day_14.createChemical('FUEL',1,storage={},reactios=reactions1, oreUsed=0), 31)
+
+    def test_createChemical_reactions3_fuel(self):
+        self.assertEqual(day_14.createChemical('FUEL',1,storage={},reactios=reactions3, oreUsed=0), 13312)
+
+    # Fuel Target
+    
+
+    def test_fuelTarget_reactions3(self):
+        self.assertEqual(day_14.fuelTarget(oreAvail=1000000000000, reactios=reactions3), 82892753)
 
 
         
@@ -52,4 +61,15 @@ reactions2 = {
     'BC': [1, {'B': 5, 'C': 7}], 
     'CA': [1, {'C': 4, 'A': 1}], 
     'FUEL': [1, {'AB': 2, 'BC': 3, 'CA': 4}]
+    }
+
+reactions3 = {
+    'NZVS': [5, {'ORE': 157}], 
+    'DCFZ': [6, {'ORE': 165}], 
+    'FUEL': [1, {'XJWVT': 44, 'KHKGT': 5, 'QDVJ': 1, 'NZVS': 29, 'GPVTF': 9, 'HKGWZ': 48}], 
+    'QDVJ': [9, {'HKGWZ': 12, 'GPVTF': 1, 'PSHF': 8}], 
+    'PSHF': [7, {'ORE': 179}], 'HKGWZ': [5, {'ORE': 177}], 
+    'XJWVT': [2, {'DCFZ': 7, 'PSHF': 7}], 
+    'GPVTF': [2, {'ORE': 165}], 
+    'KHKGT': [8, {'DCFZ': 3, 'NZVS': 7, 'HKGWZ': 5, 'PSHF': 10}]
     }
