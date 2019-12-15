@@ -12,7 +12,7 @@ class IntcodeComputer:
         '''
         self._intCodeProgram = program
         self._memoryPosition = 0
-        self._silent = False
+        self._silent = True
         self._output = []           # list that holds the outputs
         self._relativeBase = 0      # _relativeBase, used in 'relative mode'
         
@@ -357,7 +357,7 @@ class IntcodeComputer:
                 nextMemoryPosition = self._memoryPosition
                 terminate = True
             elif op == self.inputOP:
-                print('input')
+                # print('input')
                 if len(input) > 0:              
                     inparam = input.pop(0)
                     nextMemoryPosition = op(paramode, inparam) # Perform opeartion

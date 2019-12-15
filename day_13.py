@@ -82,20 +82,20 @@ def runGame():
     IC._output = []    # Clear the output list
     terminate = False
     stoppedAtInput = False
+    HiScore = 0
     while not terminate:
         length = 0
         while length < 3 and not terminate:
-            print(IC._memoryPosition)
             terminate, stoppedAtInput = IC.perform_one_operation(input = inp, stopAtInput = True) 
             length = len(IC._output)
 
         
-        print(f'OutPut: {IC._output}')
-        print(f'Terminate: {terminate}')
-        print(f'stoppedAtInput: {stoppedAtInput}')
-        print(f'count: {count}')
-        print(f'Next instr: {IC._intCodeProgramDict[IC._memoryPosition]}')
-        print(f'Next memPos:{IC._memoryPosition}')
+        # print(f'OutPut: {IC._output}')
+        # print(f'Terminate: {terminate}')
+        # print(f'stoppedAtInput: {stoppedAtInput}')
+        # print(f'count: {count}')
+        # print(f'Next instr: {IC._intCodeProgramDict[IC._memoryPosition]}')
+        # print(f'Next memPos:{IC._memoryPosition}')
         
 
         if terminate: break
@@ -123,35 +123,33 @@ def runGame():
         
         if t == 3:
             paddlePos = x
-            print("PADDLEPOS")
-
+        
         if t == 4:
             if paddlePos < x: inp = [1]
             elif paddlePos > x: inp = [-1]
             else: inp = [0] 
 
-        if x == -1 and y == 0:
-            score = t
-            print(f'score:{score}')
+        if x == -1 and y == 0:              # -1, 0, t gihes SCORE
+            if t > HiScore: HiScore = t
         else:
-            if t == 2: count += 1
+            if t == 2: count += 1           
             if t != 0:
                 game.drawBrick(x,y,t)
         
     game.show()
-    return count
+    return count, HiScore
 
     ##################
 
 
 def day12PartOne():
-    answer = runGame()
-    print(f'Solution Day 12, Part one:\nAnswer: {answer} \n\n')
+    count, HiScore = runGame()
+    print(f'Solution Day 12, Part one:\nNumber of tiles: {count} \n\n')
 
 
 def day12PartTwo():
-    answer = "unknown"
-    print(f'Solution Day 12, Part two:\nAnswer: {answer} \n\n')
+    count, HiScore = runGame()
+    print(f'Solution Day 12, Part two:\nFinal score: {HiScore} \n\n')
 
 
 if __name__ == "__main__":
