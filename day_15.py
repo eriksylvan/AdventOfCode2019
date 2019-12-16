@@ -32,3 +32,12 @@ if __name__ == "__main__":
 
 # Run from terminal:
 # $ python day_15.py
+
+
+
+##############
+#  LINKS
+
+
+# http://bryukh.com/labyrinth-algorithms/
+# https://runestone.academy/runestone/books/published/pythonds/Recursion/ExploringaMaze.html
