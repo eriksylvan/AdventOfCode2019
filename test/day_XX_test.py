@@ -1,12 +1,12 @@
 import unittest
-import day_12
+import day_XX
 
-class TestDay12(unittest.TestCase):
+class TestDayXX(unittest.TestCase):
     
 
    # @unittest.skip("Skip")
     def test_skip(self):
-        self.assertEqual(day_12.getAnwer(1),0)
+        self.assertEqual(day_XX.getAnwer(1),0)
 
 
         
@@ -15,5 +15,5 @@ if __name__ == '__main__':
 
 
 # Run tests from terminal:
-# $ python -m unittest day_12_test.py
+# $ python -m unittest day_XX_test.py
 
