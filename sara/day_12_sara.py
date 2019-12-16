@@ -10,7 +10,8 @@ inputFile = 'input/12_input'
 
 def getInputData():
     '''Reads the input file end returns the data in a list of int'''
-    planets = [[17,-7,-11],[1,4,-1],[6,-2,-6],[19,11,9]]
+    #planets = [[17,-7,-11],[1,4,-1],[6,-2,-6],[19,11,9]] # SARA
+    planets = [[-1,-4,0],[4,7,-1],[-14,-10,9],[1,2,17]] # ERIK
     #planets=[[-1,0,2],[2,-10,-7],[4,-8,8],[3,5,-1]]
     return planets
 
@@ -49,6 +50,7 @@ def findReturnToOrigin(planets):
             planets.moveOneTimeStep(dim)
         times.append(2*time)
     minTimes=lcm(times[0],lcm(times[1],times[2]))
+    print(times[0], times[1], times[2])
     return minTimes
 
 def day12PartTwo():

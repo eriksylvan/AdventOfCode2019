@@ -29,6 +29,9 @@ class Planet:
     def velocity(self):
         pass
 
+    def getVelocity(self):
+        return self._velocity
+
     @position.setter
     def position(self, val):
         _position = val
@@ -57,6 +60,12 @@ class Planet:
              e += abs(self._position[i]) 
              v += abs(self._velocity[i])  
         return e * v
+
+    def isAtEndpoint(self):
+        # print(self._velocity[0]==0, self._velocity[1]==0, self._velocity[2]==0)
+        # print(self._velocity[0], self._velocity[1], self._velocity[2])
+        return (self._velocity[0]==0 and self._velocity[1]==0 and self._velocity[2]==0)
+
 
 
 def newPlanetPositions(planets):
@@ -105,6 +114,53 @@ def stepsUntilPosRepeat(planetsStartPos):
     return stepcount
 
 
+###########
+def findTurningPointOneDim(inData):
+
+    planets = []
+    for i in range(4):
+        planets.append(Planet(inData[i],[0,0,0]))
+    steps = 0
+    
+    while (steps==0 or (                           \
+            not planets[0].isAtEndpoint() or \
+            not planets[1].isAtEndpoint() or \
+            not planets[2].isAtEndpoint() or \
+            not planets[3].isAtEndpoint() )):
+            steps=steps+1
+            newPlanetPositions(planets)
+
+
+    return steps * 2
+
+def findTurningPointsXYZ():
+    Xsteps = findTurningPointOneDim([[-1,0,0],[4,0,0],[-14,0,0],[1,0,0]])
+    print(f'Xfound: {Xsteps}')
+    Ysteps = findTurningPointOneDim([[0,-4,0],[0,7,0],[0,-10,0],[0,2,0]])
+    print(f'Yfound: {Ysteps}')
+    Zsteps = findTurningPointOneDim([[0,0,0],[0,0,-1],[0,0,9],[0,0,17]])
+    print(f'Zfound: {Zsteps}')
+    return Xsteps, Ysteps, Zsteps
+
+
+
+
+def gcd(a, b):
+    """Calculate the Greatest Common Divisor of a and b using Euclidean algorithm
+
+        Unless b==0, the result will have the same sign as b (so that when
+        b is divided by it, the result comes out positive).
+        """
+    while b:
+        a, b = b, a % b
+    return a
+
+def lcm(a, b):
+    """
+        returns the Lowest Common Multiple 
+    """
+    return (a * b) // gcd(a, b)
+
 def day12PartOne():
     planetsStartPos = [[-1,-4,0],[4,7,-1],[-14,-10,9],[1,2,17]]
     eTot, outData = getPlanestData(planetsStartPos, 1000)
@@ -112,17 +168,25 @@ def day12PartOne():
 
 
 def day12PartTwo():
-    planetsStartPos = [[-1,-4,0],[4,7,-1],[-14,-10,9],[1,2,17]]
-    #example1 = [[-1, 0, 2], [2, -10, -7], [4, -8, 8], [3, 5, -1]]
-    answer = stepsUntilPosRepeat(planetsStartPos)
-    print(f'Solution Day 12, Part two:\nAnswer: {answer} \n\n')
+    # planetsStartPos = [[-1,-4,0],[4,7,-1],[-14,-10,9],[1,2,17]]
+    Xsteps, Ysteps, Zsteps = findTurningPointsXYZ()
+    # finally find the lowest multiple of the Greatest Common Divider
+    answer = lcm(Xsteps, lcm(Ysteps, Zsteps))
+    print(f'Solution Day 12, Part two:\n The four planets will be back at the starting position after {answer} steps. \n\n')
 
 
 if __name__ == "__main__":
-    #day12PartOne()
+    day12PartOne()
     day12PartTwo()
 
-  
+
+# Solution Day 12, Part one:
+# Total energy after 1000 steps: 7988
+# Xfound: 231614
+# Yfound: 193052
+# Zfound: 60424
+# Solution Day 12, Part two:
+#  The four planets will be back at the starting position after 337721412394184 steps.
 
 
 # Run from terminal:
