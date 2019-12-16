@@ -21,16 +21,18 @@ def getFFT(insignal,phase):
     return the tesult of FFT after 'phase' phases 
     '''
     l = len(insignal)
-    o=''
-    for c in insignal:
-        o += str(int(c) * phase)
-    fft = c[0:l]
+    o=[None]*l
+    
+    for i in range(l):
+        fft = getTransform(i,l)
+        o[i] = fft[i] * int(insignal[i])
+        
     return fft
 
 def getTransform(row,l):
     t = []
     le = 0
-    for j in range(1,row):
+    for j in range(row):
         t.append(0)
         le+=1
         if le >=l:break
@@ -61,9 +63,9 @@ if __name__ == "__main__":
     # day16PartTwo()
 
 
+    print(getTransform(0,8))
     print(getTransform(1,8))
     print(getTransform(2,8))
-    print(getTransform(3,8))
 
 
 # Run from terminal:
