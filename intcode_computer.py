@@ -12,7 +12,7 @@ class IntcodeComputer:
         '''
         self._intCodeProgram = program
         self._memoryPosition = 0
-        self._silent = False
+        self._silent = True
         self._output = []           # list that holds the outputs
         self._relativeBase = 0      # _relativeBase, used in 'relative mode'
         
