@@ -2,3 +2,11 @@ n-body problem
 
 https://stackoverflow.com/questions/52562117/efficiently-compute-n-body-gravitation-in-python
 https://en.wikipedia.org/wiki/N-body_problem
+
+
+Labyrinth:
+https://www.techiedelight.com/lee-algorithm-shortest-path-in-a-maze/
+
+
+SSH VScode
+https://code.visualstudio.com/docs/remote/troubleshooting
