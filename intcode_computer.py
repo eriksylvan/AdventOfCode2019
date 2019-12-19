@@ -357,7 +357,7 @@ class IntcodeComputer:
                 nextMemoryPosition = self._memoryPosition
                 terminate = True
             elif op == self.inputOP:
-                print('input')
+                #print('input')
                 if len(input) > 0:              
                     inparam = input.pop(0)
                     nextMemoryPosition = op(paramode, inparam) # Perform opeartion
