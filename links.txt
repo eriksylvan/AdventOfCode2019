@@ -13,3 +13,7 @@ https://www.youtube.com/watch?v=KiCBXu4P-2Y
 
 SSH VScode
 https://code.visualstudio.com/docs/remote/troubleshooting
+
+TalkPython 223
+Arcade library
+

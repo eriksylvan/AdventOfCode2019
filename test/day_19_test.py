@@ -6,8 +6,7 @@ class TestDa19(unittest.TestCase):
 
    # @unittest.skip("Skip")
     def test_skip(self):
-        self.assertEqual(day_19.getAnwer(11),0)
-
+        self.assertEqual(day_19.getAnwer(0),0)
 
         
 if __name__ == '__main__':

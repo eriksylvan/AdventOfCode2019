@@ -1,11 +1,11 @@
 import unittest
 import day_XX
 
-class TestDayXX(unittest.TestCase):
+class _TestDayXX(unittest.TestCase):
     
 
-   # @unittest.skip("Skip")
-    def test_skip(self):
+    @unittest.skip("Skip")
+    def _test_skip(self):
         self.assertEqual(day_XX.getAnwer(1),0)
 
 
