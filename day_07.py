@@ -116,7 +116,7 @@ def day07PartTwo():
             outE = ICE._output.pop()
             print(terminateE, outE)
             inA = outE
-            print(outE)
+
 
         thrusterDict[seq]=outE
 
