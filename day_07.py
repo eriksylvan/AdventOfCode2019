@@ -61,14 +61,80 @@ def day07PartTwo():
     #  NOT YEY IMPLEMENTED  #
     #########################
     '''
+    thrusterDict={}
+    amplifierController = getInputData()
 
+    for seq in itertools.permutations([5,6,7,8,9], 5):
 
+        ICA = IntcodeComputer(amplifierController)
+        ICB = IntcodeComputer(amplifierController)
+        ICC = IntcodeComputer(amplifierController)    
+        ICD = IntcodeComputer(amplifierController)
+        ICE = IntcodeComputer(amplifierController)
+
+        ICA.perform_one_operation(input=[seq[0]])
+        ICB.perform_one_operation(input=[seq[1]])
+        ICC.perform_one_operation(input=[seq[2]])
+        ICD.perform_one_operation(input=[seq[3]])
+        ICE.perform_one_operation(input=[seq[4]])
+        
+        terminateE = False
+        inA = 0
+        step = 0
+        while not terminateE:
+            step += 1
+            print(step)
+            stoppedAtInputA = False
+            terminateA = False
+            stoppedAtInputB = False
+            terminateB = False
+            stoppedAtInputC = False
+            terminateC = False
+            stoppedAtInputD = False
+            terminateD = False
+            stoppedAtInputE = False
+            terminateE = False
+
+            while not stoppedAtInputA and not terminateA:
+                terminateA, stoppedAtInputA = ICA.perform_one_operation(input=[inA])
+            outA = ICA._output.pop()
+
+            while not stoppedAtInputB and not terminateB:
+                terminateB, stoppedAtInputB = ICB.perform_one_operation(input=[outA])
+            outB = ICB._output.pop()
+
+            while not stoppedAtInputC and not terminateC:
+                terminateC, stoppedAtInputC = ICC.perform_one_operation(input=[outB])
+            outC = ICC._output.pop()
+            
+            while not stoppedAtInputD and not terminateD:
+                terminateD, stoppedAtInputD = ICD.perform_one_operation(input=[outC])
+            outD = ICD._output.pop()
+            
+            while not stoppedAtInputE and not terminateE:
+                terminateE, stoppedAtInputE = ICE.perform_one_operation(input=[outD])
+            outE = ICE._output.pop()
+            print(terminateE, outE)
+            inA = outE
+            print(outE)
+
+        thrusterDict[seq]=outE
+
+    maxSetting=max(thrusterDict, key=thrusterDict.get)
+    maxSignal=max(thrusterDict.values())
+    print(thrusterDict)
+    print(maxSetting)
+    print(maxSignal)
+    return maxSignal
+
+        
     answer = "unknown"
     print(f'Solution Day XX, Part two:\nAnswer: {answer} \n\n')
 
 
 if __name__ == "__main__":
-    day07PartOne()
+    # day07PartOne()
+    day07PartTwo()
 
 # Run from terminal:
 # $ python day_07.py
