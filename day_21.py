@@ -37,20 +37,37 @@ def str2asciiList(inpStr):
     
 
 def day21PartOne():
+    '''
+    Jump!
+    ABCD
+     ??-
+    
+    Do not jump
+    ???-
+
+
+
+    '''
+
     instructions = "NOT C T\nNOT A J\nOR T J\n AND D J\nWALK\n" #jump if (A=hole OR C=hole) AND D not hole 
     ascciInst = str2asciiList(instructions) 
     answer = runRobot(ascciInst)
     print(f'Solution Day 21, Part one:\n\n {answer} \n\n')
 
 
+
+
 def day21PartTwo():
-    answer = "unknown"
-    print(f'Solution Day 21, Part two:\nAnswer: {answer} \n\n')
+
+    instructions = "NOT C T\nNOT A J\nOR T J\n AND D J\nAND H J\nRUN\n" #jump if (A=hole OR C=hole) AND D not hole  AND H not hole
+    ascciInst = str2asciiList(instructions) 
+    answer = runRobot(ascciInst)
+    print(f'Solution Day 21, Part two:\n\n {answer} \n\n')
 
 
 if __name__ == "__main__":
     day21PartOne()
-    # day21PartTwo()
+    day21PartTwo()
 
     #print(str2asciiList("Erik\n"))
     # instructions = "NOT A J\nNOT B T\nAND T J\nNOT C T\nAND T J\nAND D J\nWALK\n"
