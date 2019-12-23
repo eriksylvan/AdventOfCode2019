@@ -360,7 +360,7 @@ class IntcodeComputer:
         try:
             
             if op == self.exitOP:
-                print('EXIT')
+                # print('EXIT')
                 nextMemoryPosition = self._memoryPosition
                 terminate = True
             elif op == self.inputOP:
@@ -388,7 +388,7 @@ class IntcodeComputer:
             print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos]} ')
             # halt = True
             raise
-        print(terminate, stoppedAtInput)
+        # print(terminate, stoppedAtInput)
         return terminate, stoppedAtInput
 
     def run_program(self, inp=[]):
