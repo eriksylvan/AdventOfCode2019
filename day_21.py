@@ -59,7 +59,36 @@ def day21PartOne():
 
 def day21PartTwo():
 
-    instructions = "NOT C T\nNOT A J\nOR T J\n AND D J\nAND H J\nRUN\n" #jump if (A=hole OR C=hole) AND D not hole  AND H not hole
+    # instructions =  'NOT C T\n' \
+    #             +   'NOT A J\n' \
+    #             +   'OR J T\n'  \
+    #             +   'AND D T\n' \
+    #             +   'NOT F J\n' \
+    #             +   'NOT G J\n' \
+    #             +   'NOT I J\n' \
+    #             +   'AND H J\n' \
+    #             +   'AND D J\n' \
+    #             +   'OR J T\n'\
+    #             +   'NOT I J\n'\
+    #             +   'NOT E J\n'\
+    #             +   'AND A J\n'\
+    #             +   'AND H J\n'\
+    #             +   'OR T J\n'\
+    #             +   'RUN\n'         #jump if (A=hole OR C=hole) AND D not hole  AND H not hole
+
+    
+    instructions =  'NOT A J\n'  \
+                    + 'NOT B T\n'\
+                    + 'OR T J\n' \
+                    + 'NOT C T\n'\
+                    + 'OR T J\n' \
+                    + 'AND D J\n'\
+                    + 'NOT E T\n'\
+                    + 'AND H T\n'\
+                    + 'OR E T\n'\
+                    + 'AND T J\n'\
+                    + 'RUN\n'
+
     ascciInst = str2asciiList(instructions) 
     answer = runRobot(ascciInst)
     print(f'Solution Day 21, Part two:\n\n {answer} \n\n')
