@@ -8,9 +8,14 @@ class Blocker():
         _width = 800
         _height = 600
 
-        self.black = (0,0,0)
-        self.white = (255,255,255)
         self.red = (255,0,0)
+        self.green = (0,255,0)
+        self.blue = (0,0,255)
+        self.darkBlue = (0,0,128)
+        self.white = (255,255,255)
+        self.black = (0,0,0)
+        self.grey = (128, 128, 128)
+        self.pink = (255,200,200)
         self._gameDisplay = self.pygame.display.set_mode((display_width,display_height))
         self.pygame.display.set_caption('Blocker')
         self._clock = self.pygame.time.Clock()
@@ -28,7 +33,8 @@ if __name__ == "__main__":
 
     import time
     BLCK = Blocker()
-    BLCK.draw_block(10, 10, 10,BLCK.white, BLCK.red )
+    BLCK.draw_block(10, 10, 10, BLCK.white, BLCK.red )
+    BLCK.screen_update()
     time.sleep(5)
 
 
