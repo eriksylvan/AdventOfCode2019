@@ -117,7 +117,7 @@ class IntcodeComputer:
         p1 = self.getParameter(1)
         # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if inp is None:
-            print(self._intCodeProgramDict)
+            #print(self._intCodeProgramDict)
             i1 = int(input("?"))    # input from keyboard
             # Todo: check, only number 0-9
         else:
@@ -353,24 +353,24 @@ class IntcodeComputer:
         # print(f'P2: {self.getParameter(2)}')
         # print(f'P3: {self.getParameter(3)}')
         # print(f'P4: {self.getParameter(4)}')
-        # print(f'halt: {halt}')
         
 
         # print(f'mempos:{self._memoryPosition}\nword:{opword}\nOperation:{op}\npsize:{opsize}\nparamode:{paramode}\nprg:{self._intCodeProgramDict[memPos:memPos+5]}\nm223:prg:{self._intCodeProgramDict[223]}\nm224:prg:{self._intCodeProgramDict[224]}\nm225:prg:{self._intCodeProgramDict[225]}\n')
         try:
             
             if op == self.exitOP:
-                # print('EXIT')
+                print('EXIT')
                 nextMemoryPosition = self._memoryPosition
                 terminate = True
             elif op == self.inputOP:
                 # print('input')
                 if len(input) > 0:              
                     inparam = input.pop(0)
+                    # print(inparam)
                     nextMemoryPosition = op(paramode, inparam) # Perform opeartion
                 else:
                     if stopAtInput:
-                        # Stop at input. This makes it possible for surrounding code to privide new inparameters.False
+                        # Stop at input. This makes it possible for surrounding code to privide new inparameters
                         nextMemoryPosition = self._memoryPosition # keep memory position
                         stoppedAtInput = True
                         # do not perform operation
@@ -385,7 +385,7 @@ class IntcodeComputer:
         except Exception:
             print("ERROR")
             # print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos:memPos+5]} ')
-            print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos]} ')
+            #print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos]} ')
             # halt = True
             raise
         # print(terminate, stoppedAtInput)
