@@ -2,3 +2,18 @@ n-body problem
 
 https://stackoverflow.com/questions/52562117/efficiently-compute-n-body-gravitation-in-python
 https://en.wikipedia.org/wiki/N-body_problem
+
+
+Labyrinth:
+https://www.techiedelight.com/lee-algorithm-shortest-path-in-a-maze/
+
+Breadth First Search grid shortest path: 
+https://www.youtube.com/watch?v=KiCBXu4P-2Y
+
+
+SSH VScode
+https://code.visualstudio.com/docs/remote/troubleshooting
+
+TalkPython 223
+Arcade library
+

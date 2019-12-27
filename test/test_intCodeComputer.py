@@ -63,7 +63,7 @@ class TestIntCodeComputer(unittest.TestCase):
     def test_exit(self):
         self.assertEqual(self.runIntCode([99,1,2,3,4,5,6,7]),[])
     
-            # 1   addOP8
+            # 1   addOP
             # 2   multiplyOP
             # 3   inputOP
             # 4   outputOP

@@ -42,6 +42,12 @@ class IntcodeComputer:
         p = self.readMem(pos)
         return p
 
+    # def putInput(self, inputVal):
+    #     self._input.append(inputVal)
+
+    # def popInput(self, inputVal):
+    #     self._input.append(inputVal)
+
 ##############
 # OPERATIONS #
 ##############       
@@ -111,6 +117,7 @@ class IntcodeComputer:
         p1 = self.getParameter(1)
         # p1 = self._intCodeProgramDict[self._memoryPosition + 1]
         if inp is None:
+            print(self._intCodeProgramDict)
             i1 = int(input("?"))    # input from keyboard
             # Todo: check, only number 0-9
         else:
@@ -333,7 +340,6 @@ class IntcodeComputer:
         if memPos: 
             self._memoryPosition = memPos
         nextMemoryPosition = 0
-        halt = False
         terminate = False
         stoppedAtInput = False
         opword = str(self._intCodeProgramDict[self._memoryPosition])
@@ -354,6 +360,7 @@ class IntcodeComputer:
         try:
             
             if op == self.exitOP:
+                # print('EXIT')
                 nextMemoryPosition = self._memoryPosition
                 terminate = True
             elif op == self.inputOP:
@@ -373,6 +380,7 @@ class IntcodeComputer:
                         nextMemoryPosition = op(paramode, inparam) # Perform opeartion
             else:    
                 nextMemoryPosition = op(paramode) # Perform opeartion
+            
             self._memoryPosition = nextMemoryPosition
         except Exception:
             print("ERROR")
@@ -380,6 +388,7 @@ class IntcodeComputer:
             print(f'ERROR: memPos:{memPos}, prg:{self._intCodeProgramDict[memPos]} ')
             # halt = True
             raise
+        # print(terminate, stoppedAtInput)
         return terminate, stoppedAtInput
 
     def run_program(self, inp=[]):
@@ -413,7 +422,7 @@ class IntcodeComputer:
 if __name__ == "__main__":
     print('\nMain _ IntCodeProgra\n\n')
    
-            # 1   addOP8
+            # 1   addOP
             # 2   multiplyOP
             # 3   inputOP
             # 4   outputOP
