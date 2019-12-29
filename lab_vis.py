@@ -57,6 +57,10 @@ class LabVis():
     def drawUnknown(self, x,y):
             self.draw_block(x,y,self._block_size, self.gray, self.black)
  
+    def drawGoal(self, x,y):
+            self.draw_block(x,y,self._block_size, self.black, self.red)
+ 
+
     def drawLabytinth(self, labyrinth):
         for ypos in range(self._display_height):
             for xpos in range(self._display_width):
@@ -87,7 +91,7 @@ class LabVis():
 if __name__ == "__main__":
 
     import time
-    BLCK = Blocker()
+    BLCK = LabVis()
     # BLCK.draw_block(10, 10, 10, BLCK.white, BLCK.red )
     # BLCK.screen_update()
     # time.sleep(5)
