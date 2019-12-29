@@ -10,14 +10,14 @@ inputFile = 'input/15_input'
 
 class RepairDroid():
     def __init__(self, startPostitonX = 0, startPostitonY = 0):
-        self._currentPositionX = startPostitonX   # Cartesian coordinates
-        self._currentPositionY = startPostitonY
+        #self._currentPositionX = startPostitonX   # Cartesian coordinates
+        #self._currentPositionY = startPostitonY
         self._currentposition = (startPostitonX, startPostitonY)
         # self._currentDirection = 'U' # The robot starts facing up. (U, D, L, R)
         self._visitedMap = {(startPostitonX,startPostitonY):True} # {position(x,y):visited True/False}
-        self._goalPosX = None
-        self._goalPosY = None
+        self._goalpos = (None, None)
         self._goalFound = False
+        self._stepsToGoal = 0
         prg = getInputData()
         self.IC = IntcodeComputer(prg)
         self.dir = {1:(0,-1), 2:(0,1), 3:(-1,0), 4:(1,0)} 
@@ -133,14 +133,25 @@ class RepairDroid():
 
 
 
-    def goExplore(self, fromXY, direction, labytinthDisplay):
+    def goExplore(self, fromXY, direction, steps,labytinthDisplay):
         labytinthDisplay.drawLabytinth(self._visitedMap)
-        labytinthDisplay.drawDroid(self._currentPositionX,self._currentPositionY)
-        if self._goalFound: labytinthDisplay.drawGoal(self._goalPosX, self._goalPosY)
+        labytinthDisplay.drawDroid(self._currentposition[0],self._currentposition[1])
+        if self._goalFound: 
+            labytinthDisplay.drawGoal(self._goalpos[0], self._goalpos[1])
+            text = self._stepsToGoal
+        else:
+            text = steps
+        labytinthDisplay.draw_text(str(text))
         labytinthDisplay.screen_update()
     
-        time.sleep(1)
+        #time.sleep(0.01)
         print(f'xy:{fromXY}')
+        
+            # north (1) 
+            # south (2)
+            # west (3)
+            # east (4)
+            
         def forward(dir):
             return dir
 
@@ -151,11 +162,16 @@ class RepairDroid():
         def right(dir):
             ndir = [-1, 4, 3, 1, 2]
             return ndir[dir]
+        
+        def back(dir):
+            ndir = [-1, 2, 1, 4, 3]
+            return ndir[dir]
 
         goalFound = False
         print(f'Direction: {direction} = {self.dir[direction]}')
         newXY = (fromXY[0] + self.dir[direction][0],fromXY[1] + self.dir[direction][1]) 
         print(f'ExplorePos: {newXY}')
+        print(f'steps: {steps}')
         
         o = self.processInstruction([direction])
         # 0: The repair droid hit a wall. Its position has not changed.
@@ -168,25 +184,30 @@ class RepairDroid():
             self._visitedMap[newXY] = False # not path
         elif o==1:
             moved = True
-            self._currentPosition = newXY
+            steps += 1
+            self._currentposition = newXY
             self._visitedMap[newXY] = True # path!
         elif o==2:
             moved = True
+            steps += 1
             self._goalFound = True
-            self._currentPosition = newXY
+            self._currentposition = newXY
             self._visitedMap[newXY] = True # path! and goal
+            self._goalpos = newXY
+            self._stepsToGoal = steps
             goalFound = True
         else:
             assert False, 'You should not be here'
         
-        if moved and not goalFound:
-            # north (1) 
-            # south (2)
-            # west (3)
-            # east (4)
-            goalFound = self.goExplore(newXY, forward(direction))      # explore same direction
-            goalFound = self.goExplore(newXY, left(direction))         # explore to the left
-            goalFound = self.goExplore(newXY, right(direction))        # explore to the right
+        if moved:
+            goalFound = self.goExplore(copy.deepcopy(newXY), forward(direction), steps, labytinthDisplay)      # explore same direction           
+            goalFound = self.goExplore(copy.deepcopy(newXY), left(direction), steps, labytinthDisplay)         # explore to the left
+            goalFound = self.goExplore(copy.deepcopy(newXY), right(direction), steps, labytinthDisplay)        # explore to the right
+            
+            # wrong way, go back to where you came from
+            o = self.processInstruction([back(direction)])
+            self._currentposition = fromXY
+            steps -=1 
 
         
         return goalFound
@@ -213,16 +234,13 @@ def runDroid():
     droid = RepairDroid(25, 25)
     labytinthDisplay = LabVis(50,50,10)
     labytinthDisplay.drawLabytinth(droid._visitedMap)
+    steps = 0
+    droid.goExplore(droid._currentposition, 1, steps, labytinthDisplay) # start explore north=1
+    droid.goExplore(droid._currentposition, 2, steps, labytinthDisplay) 
+    droid.goExplore(droid._currentposition, 3, steps, labytinthDisplay) 
+    droid.goExplore(droid._currentposition, 4, steps, labytinthDisplay) 
 
-    droid.goExplore(droid._currentposition, 1, labytinthDisplay) # start explore north=1
-    droid.goExplore(droid._currentposition, 2 ,labytinthDisplay) 
-    droid.goExplore(droid._currentposition, 3, labytinthDisplay) 
-    droid.goExplore(droid._currentposition, 4, labytinthDisplay) 
-
-    labytinthDisplay.drawLabytinth(droid._visitedMap)
-    labytinthDisplay.drawDroid(droid._currentPositionX,droid._currentPositionY)
-    if droid._goalFound: labytinthDisplay.drawGoal(droid._goalPosX, droid._goalPosY)
-    labytinthDisplay.screen_update()
+    return droid._stepsToGoal
     
 
 
@@ -250,8 +268,8 @@ def runDroid_random():
 
 
 def day15PartOne():
-    answer = "unknown"
-    print(f'Solution Day 15, Part one:\nAnswer: {answer} \n\n')
+    answer = runDroid()
+    print(f'Solution Day 15, Part one:\nNumber of steps to the oxygen system: {answer} \n\n')
 
 
 def day15PartTwo():
@@ -260,10 +278,10 @@ def day15PartTwo():
 
 
 if __name__ == "__main__":
-    # day15PartOne()
+    day15PartOne()
     # day15PartTwo()
     # runDroid_random()
-    runDroid()
+
 
 
 # Run from terminal:
