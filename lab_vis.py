@@ -45,6 +45,9 @@ class LabVis():
     #     elif t == 4:
     #         self.draw_block(x,y,20, self.red, self.white)
 
+    def drawStart(self, x,y):
+            self.draw_block(x,y,self._block_size, self.black, self.green)
+
     def drawWall(self, x,y):
             self.draw_block(x,y,self._block_size, self.gray, self.gray)
 

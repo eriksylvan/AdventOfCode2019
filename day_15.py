@@ -132,7 +132,6 @@ class RepairDroid():
 
 
 
-
     def goExplore(self, fromXY, direction, steps,labytinthDisplay):
         labytinthDisplay.drawLabytinth(self._visitedMap)
         labytinthDisplay.drawDroid(self._currentposition[0],self._currentposition[1])
@@ -141,10 +140,11 @@ class RepairDroid():
             text = self._stepsToGoal
         else:
             text = steps
+        labytinthDisplay.drawStart(25,25)
         labytinthDisplay.draw_text(str(text))
         labytinthDisplay.screen_update()
     
-        #time.sleep(0.01)
+        #time.sleep(0.1)
         print(f'xy:{fromXY}')
         
             # north (1) 
@@ -234,12 +234,14 @@ def runDroid():
     droid = RepairDroid(25, 25)
     labytinthDisplay = LabVis(50,50,10)
     labytinthDisplay.drawLabytinth(droid._visitedMap)
+    labytinthDisplay.drawStart(25,25)
     steps = 0
     droid.goExplore(droid._currentposition, 1, steps, labytinthDisplay) # start explore north=1
     droid.goExplore(droid._currentposition, 2, steps, labytinthDisplay) 
     droid.goExplore(droid._currentposition, 3, steps, labytinthDisplay) 
     droid.goExplore(droid._currentposition, 4, steps, labytinthDisplay) 
 
+    time.sleep(180)
     return droid._stepsToGoal
     
 
