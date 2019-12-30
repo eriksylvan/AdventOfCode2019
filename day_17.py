@@ -61,8 +61,8 @@ def decodeMap(mapList):
 def findIntersections(map):
     length = len(map[0])
     hight = len(map)
-    p = re.compile('[.][.][.]')
-    r = re.compile('[.][^.][.]')
+    # p = re.compile('[.][.][.]')
+    # r = re.compile('[.][^.][.]')
     ret = []
 
     for r in range(1, hight-1):

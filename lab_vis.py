@@ -62,7 +62,7 @@ class LabVis():
  
     def drawGoal(self, x,y):
             self.draw_block(x,y,self._block_size, self.black, self.red)
-            
+
     def drawOxygen(self, x,y):
             self.draw_block(x,y,self._block_size, self.blue, self.blue)
  
@@ -77,6 +77,17 @@ class LabVis():
                         self.drawWall(xpos,ypos)
                 else:
                     self.drawUnknown(xpos,ypos)
+
+    def drawLabytinth2(self, labyrinth):
+        for ypos in range(self._display_height):
+            for xpos in range(self._display_width):
+                if (xpos,ypos) in labyrinth:
+                    if labyrinth[(xpos,ypos)][0]:
+                        self.drawPath(xpos,ypos)
+                    else:
+                        self.drawWall(xpos,ypos)
+                else:
+                    self.drawWall(xpos,ypos)
 
     def draw_text(self,text):
         myfont = self.pygame.font.SysFont('impact', 30)
