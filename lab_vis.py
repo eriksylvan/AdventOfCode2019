@@ -78,7 +78,7 @@ class LabVis():
     def draw_text(self,text):
         myfont = self.pygame.font.SysFont('impact', 30)
         textsurface = myfont.render(text, True, self.red)
-        self.pygame.draw.rect(self._gameDisplay, self.black, [0, 0 ,100,  35], 0)
+        self.pygame.draw.rect(self._gameDisplay, self.black, [0, 0 ,59,  39], 0)
         self._gameDisplay.blit(textsurface,(0, 0))
   
     def screen_update(self):

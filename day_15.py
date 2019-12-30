@@ -140,7 +140,7 @@ class RepairDroid():
             text = self._stepsToGoal
         else:
             text = steps
-        labytinthDisplay.drawStart(25,25)
+        labytinthDisplay.drawStart(21,21)
         labytinthDisplay.draw_text(str(text))
         labytinthDisplay.screen_update()
     
@@ -200,8 +200,9 @@ class RepairDroid():
             assert False, 'You should not be here'
         
         if moved:
-            goalFound = self.goExplore(copy.deepcopy(newXY), forward(direction), steps, labytinthDisplay)      # explore same direction           
+            # left then forward the right... follow thw left wall 
             goalFound = self.goExplore(copy.deepcopy(newXY), left(direction), steps, labytinthDisplay)         # explore to the left
+            goalFound = self.goExplore(copy.deepcopy(newXY), forward(direction), steps, labytinthDisplay)      # explore same direction           
             goalFound = self.goExplore(copy.deepcopy(newXY), right(direction), steps, labytinthDisplay)        # explore to the right
             
             # wrong way, go back to where you came from
@@ -231,17 +232,21 @@ def getAnwer(x):
 def runDroid():
 
     
-    droid = RepairDroid(25, 25)
-    labytinthDisplay = LabVis(50,50,10)
+    droid = RepairDroid(21, 21)
+    labytinthDisplay = LabVis(41,41,20)
     labytinthDisplay.drawLabytinth(droid._visitedMap)
-    labytinthDisplay.drawStart(25,25)
+    labytinthDisplay.drawStart(21,21)
     steps = 0
     droid.goExplore(droid._currentposition, 1, steps, labytinthDisplay) # start explore north=1
     droid.goExplore(droid._currentposition, 2, steps, labytinthDisplay) 
     droid.goExplore(droid._currentposition, 3, steps, labytinthDisplay) 
     droid.goExplore(droid._currentposition, 4, steps, labytinthDisplay) 
 
-    time.sleep(180)
+    input('pause')
+    with open('day_15_labyrinthDict', 'w') as f:
+        print(droid._visitedMap, file=f) 
+    # Saves labyrint representes as dict, read with:
+    # with open('day_15_labyrinthDict', 'r') as f: content = f.read(); dic = eval(content);
     return droid._stepsToGoal
     
 
@@ -263,10 +268,68 @@ def runDroid_random():
         ######
 
         labytinthDisplay.drawLabytinth(droid._visitedMap)
-        labytinthDisplay.drawDroid(droid._currentPositionX,droid._currentPositionY)
+        labytinthDisplay.drawDroid(droid._currentposition[0],droid._currentposition[1])
         if droid._goalFound: labytinthDisplay.drawGoal(droid._goalPosX, droid._goalPosY)
         labytinthDisplay.screen_update()
         #time.sleep(0.1)
+
+
+
+def dict2maze():
+    pass
+
+def maze2graph(maze):
+    print(maze)
+    height = len(maze)
+    width = len(maze[0]) if height else 0
+    graph = {}
+    print(height,width)
+    for j in range(height): 
+        for i in range(width): 
+            if maze[i][j]:
+                graph[(i, j)] = [] 
+    print(graph)
+    
+
+    for row, col in graph.keys():
+        if row < height - 1 and maze[row + 1][col]:
+            graph[(row, col)].append(("S", (row + 1, col)))
+            graph[(row + 1, col)].append(("N", (row, col)))
+        if col < width - 1 and maze[row][col + 1]:
+            graph[(row, col)].append(("E", (row, col + 1)))
+            graph[(row, col + 1)].append(("W", (row, col)))
+    return graph
+
+def dict2MazeStr(dictionary):
+    width = max([w[0] for w in dictionary])
+    height = max([h[1] for h in dictionary])
+    print(f'w={width}, h={height}')
+    mazeStr='' 
+    for h in range(height+1):
+        for w in range(width+1):
+            if (w,h) in dictionary:
+                if dictionary[(w,h)]:
+                    mazeStr += '.'
+                else:
+                    mazeStr += '#'
+            else:
+                mazeStr += '#'
+        mazeStr += '\n'
+    print(mazeStr)        
+    with open('day_15_labyrinthStr', 'w') as f:
+        print(mazeStr, file=f) 
+    return mazeStr
+
+def mazeStrFile2MazeMatrix(inputFile):
+    print(inputFile)
+    mazeMatrix = []
+    with open(inputFile) as input:
+        for line in input:
+            mazeMatrix.append([ch=='.' for ch in str(line).strip()])
+    return mazeMatrix
+
+
+
 
 
 def day15PartOne():
@@ -275,15 +338,25 @@ def day15PartOne():
 
 
 def day15PartTwo():
+    
+    with open('day_15_labyrinthDict', 'r') as f: 
+        content = f.read()
+        dictionary = eval(content)
+
+    #dict2MazeGraph(dictionary)
+
     answer = "unknown"
     print(f'Solution Day 15, Part two:\nAnswer: {answer} \n\n')
 
 
 if __name__ == "__main__":
-    day15PartOne()
+    # day15PartOne()
     # day15PartTwo()
     # runDroid_random()
 
+    mazeMatrix = mazeStrFile2MazeMatrix('day_15_labyrinthStr')
+    graph = maze2graph(mazeMatrix)
+    print(graph) 
 
 
 # Run from terminal:
