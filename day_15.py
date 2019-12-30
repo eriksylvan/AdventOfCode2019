@@ -4,6 +4,7 @@ import copy
 import time
 import random
 from intcode_computer import IntcodeComputer
+from collections import deque
 from lab_vis import LabVis
 
 inputFile = 'input/15_input'
@@ -247,6 +248,7 @@ def runDroid():
         print(droid._visitedMap, file=f) 
     # Saves labyrint representes as dict, read with:
     # with open('day_15_labyrinthDict', 'r') as f: content = f.read(); dic = eval(content);
+    print(f'Goal Position:{droid._goalpos}')
     return droid._stepsToGoal
     
 
@@ -284,12 +286,11 @@ def maze2graph(maze):
     width = len(maze[0]) if height else 0
     graph = {}
     print(height,width)
-    for j in range(height): 
-        for i in range(width): 
-            if maze[i][j]:
-                graph[(i, j)] = [] 
-    print(graph)
-    
+    graph = {(i, j): [] for j in range(width) for i in range(height) if maze[i][j]}
+    # for j in range(height): 
+    #     for i in range(width): 
+    #         if maze[i][j]:
+    #             graph[(i, j)] = [] 
 
     for row, col in graph.keys():
         if row < height - 1 and maze[row + 1][col]:
@@ -300,6 +301,34 @@ def maze2graph(maze):
             graph[(row, col + 1)].append(("W", (row, col)))
     return graph
 
+
+
+
+
+def oxygen_BFS(graph, start,  labytinthDisplay):
+    # start = (37, 39)
+    # goal = (x,y)
+    queue = deque([("", start)])
+    visited = set()
+    maxPath = 0
+    while queue:
+        path, current = queue.popleft()
+        #if current == goal:
+        #    return path
+        if current in visited:
+            continue
+        if len(path) > maxPath:
+            maxPath = len(path)
+            time.sleep(0.1)
+
+        visited.add(current)
+        labytinthDisplay.drawOxygen(current[1], current[0])
+        labytinthDisplay.draw_text(str(maxPath))
+        labytinthDisplay.screen_update()
+        for direction, neighbour in graph[current]:
+            queue.append((path + direction, neighbour))
+    return maxPath
+        
 def dict2MazeStr(dictionary):
     width = max([w[0] for w in dictionary])
     height = max([h[1] for h in dictionary])
@@ -339,25 +368,30 @@ def day15PartOne():
 
 def day15PartTwo():
     
+    labytinthDisplay = LabVis(41,41,20)
     with open('day_15_labyrinthDict', 'r') as f: 
         content = f.read()
-        dictionary = eval(content)
-
-    #dict2MazeGraph(dictionary)
-
-    answer = "unknown"
-    print(f'Solution Day 15, Part two:\nAnswer: {answer} \n\n')
-
-
-if __name__ == "__main__":
-    # day15PartOne()
-    # day15PartTwo()
-    # runDroid_random()
-
+        maze = eval(content)
+    
+    labytinthDisplay.drawLabytinth(maze)
+    labytinthDisplay.drawGoal(37, 39)
+    labytinthDisplay.screen_update()
     mazeMatrix = mazeStrFile2MazeMatrix('day_15_labyrinthStr')
     graph = maze2graph(mazeMatrix)
-    print(graph) 
+    #print(graph) 
+    answer = oxygen_BFS(graph, (39, 37), labytinthDisplay)
+    
+  
+    print(f'Solution Day 15, Part two:\nOxygen fills up the area in: {answer} min. \n\n')
+    input()
 
+if __name__ == "__main__":
+    #day15PartOne()
+    day15PartTwo()
+    # runDroid_random()
+
+
+    
 
 # Run from terminal:
 # $ python day_15.py

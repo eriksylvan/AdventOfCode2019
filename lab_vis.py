@@ -14,7 +14,7 @@ class LabVis():
 
         self.red = (255,0,0)
         self.green = (0,255,0)
-        self.blue = (0,0,255)
+        self.blue = (0,128,255)
         self.darkBlue = (0,0,128)
         self.white = (255,255,255)
         self.black = (0,0,0)
@@ -62,6 +62,9 @@ class LabVis():
  
     def drawGoal(self, x,y):
             self.draw_block(x,y,self._block_size, self.black, self.red)
+            
+    def drawOxygen(self, x,y):
+            self.draw_block(x,y,self._block_size, self.blue, self.blue)
  
 
     def drawLabytinth(self, labyrinth):
