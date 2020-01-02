@@ -4,6 +4,7 @@ import copy
 import re   # regular expression
 from collections import deque
 from lab_vis import LabVis
+import time
 
 inputFile = 'input/18_input'
 
@@ -63,6 +64,7 @@ def BFS_path(graph, start, goal): #labytinthDisplay):
         #labytinthDisplay.draw_text(str(maxPath))
         labytinthDisplay.drawStart(start[0], start[1])
         labytinthDisplay.screen_update()
+        #time.sleep(0.05)
         for direction, neighbour in graph[current]:
             queue.append((path + direction, neighbour))
     return "Did not finw a way"

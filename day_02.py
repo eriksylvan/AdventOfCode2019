@@ -40,6 +40,7 @@ def intcode(intCodeProgram):
 def day02PartOne():
 
     intCodeProgram = getInputData()
+    print(intCodeProgram)
     intCodeProgram[1] = 12
     intCodeProgram[2] = 2
     intCodeProgram = intcode(intCodeProgram)
