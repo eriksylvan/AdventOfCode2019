@@ -386,7 +386,7 @@ def day15PartTwo():
     input()
 
 if __name__ == "__main__":
-    #day15PartOne()
+    day15PartOne()
     day15PartTwo()
     # runDroid_random()
 

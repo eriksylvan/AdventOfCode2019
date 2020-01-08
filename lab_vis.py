@@ -79,8 +79,10 @@ class LabVis():
                     self.drawUnknown(xpos,ypos)
 
     def drawLabytinth2(self, labyrinth):
-        for ypos in range(self._display_height):
-            for xpos in range(self._display_width):
+        print(f'Height:{self._display_height}')
+        print(f'Width:{self._display_width}')
+        for xpos in range(self._display_width):
+            for ypos in range(self._display_height):
                 if (xpos,ypos) in labyrinth:
                     if labyrinth[(xpos,ypos)][0]:
                         self.drawPath(xpos,ypos)
