@@ -17,3 +17,6 @@ https://code.visualstudio.com/docs/remote/troubleshooting
 TalkPython 223
 Arcade library
 
+Walkthrough!
+https://github.com/mebeim/aoc/blob/master/2019/README.md#day-18---many-worlds-interpretation
+
